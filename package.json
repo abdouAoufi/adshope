@@ -1,0 +1,23 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "this is a simple project to wrap my mind about node js",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdouAoufi/nodeJS.git"
+  },
+  "keywords": [
+    "node"
+  ],
+  "author": "abdou",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abdouAoufi/nodeJS/issues"
+  },
+  "homepage": "https://github.com/abdouAoufi/nodeJS#readme"
+}
