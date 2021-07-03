@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/abdouAoufi/nodeJS/issues"
   },
-  "homepage": "https://github.com/abdouAoufi/nodeJS#readme"
+  "homepage": "https://github.com/abdouAoufi/nodeJS#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }

@@ -1,1 +1,1 @@
-name
+name=abdou&age=12
