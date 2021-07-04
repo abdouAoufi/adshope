@@ -5,20 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
-    <style>
-    
-      a{
-         text-decoration: none;
-      }
-    </style>
+    <link rel="stylesheet" href="/css/main.css">
+
   </head>
   <body>
-    <header>
-      <nav>
-        <ul>
-          <li style="color: green;"><a href="/">Home</a></li>
-          <li><a href="/admin/add-product">Add product</a></li>
-          <li><a href="/order">Order product</a></li>
+    <header class="main-header">
+      <nav class="main-header__nav">
+        <ul class="main-header__item-list">
+          <li class="main-header__item"><a class="active" href="/">Home</a></li>
+          <li class="main-header__item">
+            <a href="/admin/add-product">Add product</a>
+          </li>
+          <li class="main-header__item"><a href="/order">Order product</a></li>
         </ul>
       </nav>
     </header>
@@ -26,5 +24,6 @@
       <h1>My products</h1>
       <p>List of all products ...</p>
     </main>
+    <script src="/js/sho.js"></script>
   </body>
 </html>

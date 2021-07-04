@@ -5,20 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Order</title>
-    <style>
-      input {
-        display: block;
-      }
-      a{
-         text-decoration: none;
-      }
-    </style>
   </head>
   <body>
-    <header>
-      <nav>
-        <ul>
-          <li style="color: green"><a href="/">Home</a></li>
+    <header class="main-header">
+      <nav class="main-header__nav">
+        <ul class="main-header__item-list">
+          <li class="main-header__item"><a class="active" href="/">Home</a></li>
+          <li class="main-header__item">
+            <a href="/admin/add-product">Add product</a>
+          </li>
+          <li class="main-header__item"><a href="/order">Order product</a></li>
         </ul>
       </nav>
     </header>

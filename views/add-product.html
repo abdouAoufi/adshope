@@ -5,28 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add product</title>
-    <style>
-      input {
-        display: block;
-      }
-      a{
-         text-decoration: none;
-      }
-    </style>
   </head>
   <body>
-    <header>
-      <nav>
-        <ul>
-          <li style="color: green;"><a href="/">Home</a></li>
-       
+    <header class="main-header">
+      <nav class="main-header__nav">
+        <ul class="main-header__item-list">
+          <li class="main-header__item"><a class="active" href="/">Home</a></li>
+          <li class="main-header__item">
+            <a href="/admin/add-product">Add product</a>
+          </li>
+          <li class="main-header__item"><a href="/order">Order product</a></li>
         </ul>
       </nav>
     </header>
-    <form action="/admin/add-product" method="POST">
-      <input type="text" name="title" placeholder="name of product" />
-      <input type="number" name="quantity" placeholder="quantity" />
-      <button type="submit">Add product</button>
-    </form>
+    <main>
+      <form name="product" action="/admin/add-product" method="POST">
+        <input type="text" name="title" placeholder="name of product" />
+        <input type="number" name="quantity" placeholder="quantity" />
+        <button type="submit">Add product</button>
+      </form>
+    </main>
   </body>
 </html>

@@ -1,0 +1,37 @@
+* {
+   padding: 0;
+   margin: 0;
+ }
+
+ .main-header {
+   width: 100%;
+   background-color: #d44d4d;
+ }
+ .main-header__nav {
+   width: 100%;
+   height: 100%;
+   padding: 0.5rem;
+ }
+ .active {
+   color: yellow !important;
+ }
+ .main-header__item-list {
+   list-style: none;
+   display: flex;
+   justify-content: space-around;
+   align-items: center;
+ }
+
+ .main-header__item a {
+   color: white;
+   font-weight: 600;
+   text-decoration: none;
+ }
+
+ main {
+   padding: 1rem;
+ }
+
+ input {
+   display: block;
+ }
