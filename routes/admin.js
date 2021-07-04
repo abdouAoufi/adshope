@@ -1,19 +1,17 @@
 const express = require("express");
 const fs = require("fs");
+const path = require("path");
+const root = require("../helpers/path");
+
 const router = express.Router();
 
 router.get("/add-product", (req, res, next) => {
-  fs.readFile("./index.html", "utf-8", (error, data) => {
-    if (error) {
-      res.send("<h1>Error getting data !</h1>");
-    }
-    res.send(data);
-  });
+  res.sendFile(path.join(root, "views", "add-product.html"));
 });
 
 // we add another middleware to handle another request
-router.post("/product", (req, res, next) => {
-  console.log(req.body);
+router.post("/add-product", (req, res, next) => {
+  console.log("requst coming => ", req.body);
   res.redirect("/");
 });
 

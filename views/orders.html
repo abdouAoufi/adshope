@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order</title>
+    <style>
+      input {
+        display: block;
+      }
+      a{
+         text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li style="color: green"><a href="/">Home</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <form action="order" method="POST">
+        <input type="text" name="title" placeholder="name of product" />
+        <input type="number" name="quantity" placeholder="quantity" />
+        <input type="date" name="date" placeholder="date" />
+        <input type="text" name="location" placeholder="Your location " />
+        <button type="submit">Order now</button>
+      </form>
+    </main>
+  </body>
+</html>
