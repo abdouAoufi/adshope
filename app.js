@@ -20,7 +20,7 @@ app.use("/admin", adminData.routes);
 app.use(orderData.router);
 app.use(shoupRouter);
 app.use((req, res, next) => {
-  res.status(404).sendFile(path.join(__dirname, "views", "erro.html"));
+  res.status(404).render("404" , {pageTitle : "not found"});
 });
 
 app.listen(3000);
