@@ -7,7 +7,13 @@ const router = express.Router();
 const products = [];
 router.get("/add-product", (req, res, next) => {
   // res.sendFile(path.join(root, "views", "add-product.html")); // we send html file here
-  res.render("add-product", { pageTitle: "Add orders" , path : "/admin/add-product" ,  headerValue : "You can enter your information Here "});
+  var mascots = [
+    { name: 'Sammy', organization: "DigitalOcean", birth_year: 2012},
+    { name: 'Tux', organization: "Linux", birth_year: 1996},
+    { name: 'Moby Dock', organization: "Docker", birth_year: 2013}
+  ];
+  var tagline = "No programming concept is complete without a cute animal mascot.";
+  res.render("add-product", { pageTitle: "Add orders" , path : "/admin/add-product" ,  headerValue : "You can enter your information Here " , tagline , mascots});
 });
 
 // we add another middleware to handle another request

@@ -17,8 +17,8 @@ app.use(
 );
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/admin", adminData.routes);
-// app.use(orderData.router);
-// app.use(shoupRouter);
+app.use(orderData.router);
+app.use(shoupRouter);
 app.get("/some", (req, res, next) => {
   res.send("<h1> costume page ! </h1>");
 });
