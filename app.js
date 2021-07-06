@@ -1,5 +1,5 @@
 const express = require("express");
-const productRouter = require("./routes/admin");
+const adminData = require("./routes/admin");
 const shoupRouter = require("./routes/shop");
 const orderRouter = require("./routes/order");
 const bodyParser = require("body-parser");
@@ -13,7 +13,7 @@ app.use(
   })
 );
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/admin", productRouter);
+app.use("/admin", adminData.routes);
 app.use(orderRouter);
 app.use(shoupRouter);
 app.use((req, res, next) => {
