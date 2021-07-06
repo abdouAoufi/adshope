@@ -72,3 +72,19 @@ input {
 .form-holder-innerContainer {
   padding: 1rem;
 }
+
+
+.title{
+  color: #d44d4d;
+}
+
+.grid{
+  display: inline-grid;
+}
+
+.card.product-item {
+  border: 1px solid #eee;
+  margin: 4px;
+  padding: .5rem;
+  border-radius: 6px;
+}
