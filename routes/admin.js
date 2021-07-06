@@ -7,7 +7,7 @@ const router = express.Router();
 const products = [];
 router.get("/add-product", (req, res, next) => {
   // res.sendFile(path.join(root, "views", "add-product.html")); // we send html file here
-  res.render("add-product", { pageTitle: "Add orders" });
+  res.render("add-product", { pageTitle: "Add orders" , path : "/admin/add-product" });
 });
 
 // we add another middleware to handle another request
