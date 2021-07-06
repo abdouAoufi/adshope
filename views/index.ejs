@@ -20,27 +20,36 @@
       </nav>
     </header>
     <main>
-      <div>
-        <h1>My products</h1>
-        <ul>
-          <% prods.forEach(function(product) { %>
+      <% if (prods.length > 0) { %>
+        <div>
+          <h1>My products</h1>
+          <ul>
+            <% prods.forEach(function(product) { %>
+            <li>
+              name : <%= product.title %> quantity : <%= product.quantity %>,
+            </li>
+            <% }); %>
+          </ul>
+        </div>
+      <% } else { %>
+        <p>No product for now </p>
+      <% } %>
+      <% if (ords.length > 0) { %>
+        <div>
+          <h1>My orders</h1>
+          <% ords.forEach(order => { %>
           <li>
-            name : <%= product.title %> quantity : <%= product.quantity %>,
+            <p>title : <%= order.title%></p>
+            <p>quantity : <%= order.quantity%></p>
+            <p>date : <%= order.date%></p>
+            <p>location : <%= order.location%></p>
           </li>
-          <% }); %>
-        </ul>
-      </div>
-      <div>
-        <h1>My orders</h1>
-        <% ords.forEach(order => { %>
-        <li>
-          <p>title : <%= order.title%></p>
-          <p>quantity : <%= order.quantity%></p>
-          <p>date : <%= order.date%></p>
-          <p>location : <%= order.location%></p>
-        </li>
-        <% }) %>
-      </div>
+          <% }) %>
+        </div>
+     <% } else { %>
+      <p>No order for now !</p>
+       <% } %>
+      
     </main>
     <script src="/js/sho.js"></script>
   </body>

@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <%- include('./partials/head'); %>
+    <%- include('./partials/head.ejs'); %>
   </head>
   <body>
-    <header class="main-header"><%- include("./partials/header"); %></header>
+    <header class="main-header"><%- include("./partials/header.ejs"); %></header>
     <main>
-      <h3><%= tagline %></h3>
       <div class="form-holder">
         <div class="form-holder-innerContainer">
           <form name="product" action="/admin/add-product" method="POST">

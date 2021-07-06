@@ -1,9 +1,11 @@
 <nav class="main-header__nav">
    <ul class="main-header__item-list">
-     <li class="main-header__item"><a class="active" href="/">Home</a></li>
+     <li class="main-header__item"><a  href="/">Home</a></li>
      <li class="main-header__item">
-       <a href="/admin/add-product">Add product</a>
+       <a class="<%= path === '/admin/add-product' ? 'active' : '' %> " href="/admin/add-product">Add product</a>
      </li>
-     <li class="main-header__item"><a href="/order">Order product</a></li>
+     <li class="main-header__item">
+       <a class="<%= path === "/order" ? "active" : ''  %> " href="/order">Order product</a>
+     </li>
    </ul>
  </nav>
