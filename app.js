@@ -1,7 +1,7 @@
 const express = require("express");
 const adminData = require("./routes/admin");
 const shoupRouter = require("./routes/shop");
-const orderRouter = require("./routes/order");
+const orderData = require("./routes/order");
 const bodyParser = require("body-parser");
 const path = require("path");
 
@@ -14,7 +14,7 @@ app.use(
 );
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/admin", adminData.routes);
-app.use(orderRouter);
+app.use(orderData.router);
 app.use(shoupRouter);
 app.use((req, res, next) => {
   res.status(404).sendFile(path.join(__dirname, "views", "erro.html"));
