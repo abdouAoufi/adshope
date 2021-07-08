@@ -1,29 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= pageTitle %></title>
-    <link rel="stylesheet" href="/css/main.css" />
+<%- include('includes/head.ejs') %>
+</head>
 
-    <style>
-      a {
-        text-decoration: none;
-      }
-      h1 {
-        color: red;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <nav>
-        <ul>
-          <li style="color: green"><a href="/">Home</a></li>
-        </ul>
-      </nav>
-    </header>
-    <h1>Error 404</h1>
-  </body>
-</html>
+<body>
+    <%- include('includes/navigation.ejs') %>
+    <h1>Page Not Found!</h1>
+
+<%- include('includes/end.ejs') %>

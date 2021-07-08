@@ -1,30 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <%- include('./partials/head.ejs'); %>
-  </head>
-  <body>
-    <header class="main-header"><%- include("./partials/header.ejs"); %></header>
+<%- include('includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+   <%- include('includes/navigation.ejs') %>
+
     <main>
-      <div class="form-holder">
-        <div class="form-holder-innerContainer">
-          <form name="product" action="/admin/add-product" method="POST">
-            <input
-              class="inp"
-              type="text"
-              name="title"
-              placeholder="name of product"
-            />
-            <input
-              class="inp"
-              type="number"
-              name="quantity"
-              placeholder="quantity"
-            />
-            <button class="submitBtn" type="submit">Add product</button>
-          </form>
-        </div>
-      </div>
+        <form class="product-form" action="/admin/add-product" method="POST">
+            <div class="form-control">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title">
+            </div>
+
+            <button class="btn" type="submit">Add Product</button>
+        </form>
     </main>
-  </body>
-</html>
+<%- include('includes/end.ejs') %>
