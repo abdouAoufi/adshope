@@ -2,7 +2,7 @@ const Product = require("../models/product");
 
 // this is a middleware
 exports.getAddProduct = (req, res) => {
-  res.render("add-product", {
+  res.render("admin/add-product", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     formsCSS: true,
@@ -19,7 +19,7 @@ exports.postAddProduct = (req, res) => {
 
 exports.getProducts = (req, res) => {
   Product.fetchAll((product) => {
-    res.render("shop", {
+    res.render("shop/product-list", {
       prods: product,
       pageTitle: "Shop",
       path: "/",
@@ -29,3 +29,12 @@ exports.getProducts = (req, res) => {
     });
   });
 };
+
+
+exports.getCart = (req , res) => {
+  res.render("shop/cart" , {pageTitle : "Cart"})
+}
+
+exports.getPProducts = (req , res) => {
+  res.render("admin/products" , {pageTille : "Products .."})
+}
