@@ -1,7 +1,1 @@
-[
-  { "title": "faf" },
-  { "title": "localhost" },
-  { "title": "save", "storedProduct": [] },
-  { "title": "simple is always better", "storedProduct": [] },
-  { "title": "new", "storedProduct": [] }
-]
+[{"title":"Galxy S21","imageUrl":"https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.teknolojioku.com%2F2%2F1280%2F720%2Fstorage%2Ffiles%2Fimages%2F2021%2F01%2F04%2Fgalaxy-s21-ender-63mK_cover.jpg&f=1&nofb=1","descreption":"A brand new galaxy s21","price":"2000"},{"title":"Iphone 12 pro","imageUrl":"https://xclusivecompetitions.com/wp-content/uploads/2020/12/iphone-12-pro-max-graphite-hero.png","descreption":"A brand new iphone 12 pro","price":"1200"}]
