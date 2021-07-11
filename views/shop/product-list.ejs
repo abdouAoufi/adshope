@@ -15,16 +15,15 @@
                         </header>
                         <div class="card__image">
                             <img src="<%= product.imageUrl %> "
-                                alt="<%= product.tilte %> ">
+                                alt="<%= product.tilte %> " height="250">
                         </div>
                         <div class="card__content">
                             <h2 class="product__price"><%= product.price %> $</h2>
                             <p class="product__description"><%= product.descreption %> </p>
                         </div>
                         <div class="card__actions">
-                            <form action="/add-to-cart" method="post">
-                                <button class="btn">Add to Cart</button>
-                            </form>
+                            <a href="/products/<%= product.id %> " class="btn"> Details</a>
+                            <%- include("../includes/add-to-cart.ejs" , {product : product}) %> 
                         </div>
                     </article>
                 <% } %>

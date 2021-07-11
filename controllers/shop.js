@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const Cart = require("../models/cart");
 
 exports.getProducts = (req, res) => {
   Product.fetchAll((product) => {
@@ -11,7 +12,14 @@ exports.getProducts = (req, res) => {
 };
 
 exports.getCart = (req, res) => {
-  res.render("shop/cart", { pageTitle: "Your catr" , path:"/cart"});
+  res.render("shop/cart", { pageTitle: "Your catr", path: "/cart" });
+};
+
+exports.postCart = (req, res) => {
+  Product.findById(req.body.productId, (product) => {
+    Cart.addProduct(req.body.productId, product.price);
+  });
+  res.redirect("/cart");
 };
 
 // ! middleware for home page
@@ -25,10 +33,20 @@ exports.getIndex = (req, res) => {
   });
 };
 
+exports.getProduct = (req, res) => {
+  const prodId = req.params.productId;
+  Product.findById(prodId, (result) => {
+    res.render("shop/product-detail", {
+      path: "/products",
+      pageTitle: result.title,
+      product: result,
+    });
+  });
+};
 
-exports.getOrders = (req , res) => {
-  res.render("shop/orders" , {pageTitle : "Orders" , path : "/orders"} )
-}
+exports.getOrders = (req, res) => {
+  res.render("shop/orders", { pageTitle: "Orders", path: "/orders" });
+};
 exports.getCheckout = (req, res) => {
   res.render("/shop/checkout", { pageTitle: "Checkout page" });
 };

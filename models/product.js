@@ -9,7 +9,7 @@ const getProductFromFile = (cb) => {
   );
   fs.readFile(p, (err, content) => {
     if (err) return cb([]);
-    cb(JSON.parse(content));
+    cb(JSON.parse(content)); // execute the callback with the array retrived from the file .....
   });
 };
 
@@ -21,6 +21,7 @@ module.exports = class Product {
     this.price = price;
   }
   save() {
+    this.id = Math.random().toString();
     const p = path.join(
       path.dirname(process.mainModule.filename),
       "data",
@@ -35,5 +36,12 @@ module.exports = class Product {
   }
   static fetchAll(cb) {
     getProductFromFile(cb);
+  }
+
+  static findById(id, cb) {
+    getProductFromFile((products) => {
+      let product = products.find((p) => p.id === id); // gives us back an object
+      cb(product); // ? execute the callback function with that object [RETRIEVED]
+    });
   }
 };
