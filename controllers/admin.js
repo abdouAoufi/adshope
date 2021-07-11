@@ -1,6 +1,5 @@
 const Product = require("../models/product");
 
-// this is a middleware
 exports.getAddProduct = (req, res) => {
   res.render("admin/add-product", {
     pageTitle: "Add Product",
@@ -19,22 +18,10 @@ exports.postAddProduct = (req, res) => {
 
 exports.getProducts = (req, res) => {
   Product.fetchAll((product) => {
-    res.render("shop/product-list", {
+    res.render("admin/products", {
       prods: product,
-      pageTitle: "Shop",
-      path: "/",
-      hasProducts: product.length > 0,
-      activeShop: true,
-      productCSS: true,
+      pageTitle: "Admin products",
+      path: "/admin/products",
     });
   });
 };
-
-
-exports.getCart = (req , res) => {
-  res.render("shop/cart" , {pageTitle : "Cart"})
-}
-
-exports.getPProducts = (req , res) => {
-  res.render("admin/products" , {pageTille : "Products .."})
-}
