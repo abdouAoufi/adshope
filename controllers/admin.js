@@ -1,13 +1,30 @@
 const Product = require("../models/product");
 
 exports.getAddProduct = (req, res) => {
-  res.render("admin/add-product", {
+  res.render("admin/edit-product", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
-    formsCSS: true,
-    productCSS: true,
-    activeAddProduct: true,
+    editing : false ,
   });
+};
+
+exports.getEditProduct = (req, res) => {
+  const editMode = req.query.edit;
+  const idProduct = req.params.productId;
+  console.log(idProduct);
+  if (!editMode) {
+    res.redirect("/");
+  } else {
+    Product.findById(idProduct , (product) => {
+      console.log(product)
+      res.render("admin/edit-product", {
+        pageTitle: "Edit Product",
+        product : product ,
+        path: "/admin/edit-product",
+        editing: editMode,
+      });
+    })
+  }
 };
 
 exports.postAddProduct = (req, res) => {
@@ -30,3 +47,8 @@ exports.getProducts = (req, res) => {
     });
   });
 };
+
+
+exports.postEditProduct = (req , res) => {
+  
+}
