@@ -10,6 +10,7 @@ exports.getProducts = (req, res) => {
     });
   });
 };
+// ? middleware to display carts 
 
 exports.getCart = (req, res) => {
   Cart.getCart((cart) => {
@@ -48,7 +49,7 @@ exports.postCart = (req, res) => {
   res.redirect("/cart");
 };
 
-// ! middleware for home page
+// ? middleware for home page
 exports.getIndex = (req, res) => {
   Product.fetchAll((product) => {
     res.render("shop/index", {
