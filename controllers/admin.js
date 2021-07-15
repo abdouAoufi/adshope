@@ -34,18 +34,25 @@ exports.postAddProduct = (req, res) => {
   const description = req.body.description;
   console.log(title);
   const product = new Product(null, title, imageUrl, description, price);
-  product.save();
-  res.redirect("/");
+  product
+    .save()
+    .then(() => {
+      res.redirect("/");
+    })
+    .catch((err) => console.log(err));
 };
 
+// get porducts for admin page
 exports.getProducts = (req, res) => {
-  Product.fetchAll((product) => {
-    res.render("admin/products", {
-      prods: product,
-      pageTitle: "Admin products",
-      path: "/admin/products",
-    });
-  });
+  Product.fetchAll()
+    .then(([rows, fieldData]) => {
+      res.render("admin/products", {
+        prods: rows,
+        pageTitle: "Admin products",
+        path: "/admin/products",
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.postEditProduct = (req, res) => {

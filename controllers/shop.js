@@ -2,15 +2,19 @@ const Product = require("../models/product");
 const Cart = require("../models/cart");
 
 exports.getProducts = (req, res) => {
-  Product.fetchAll((product) => {
-    res.render("shop/product-list", {
-      prods: product,
-      pageTitle: "All products",
-      path: "/products",
+  Product.fetchAll()
+    .then(([rows, fieldData]) => {
+      res.render("shop/product-list", {
+        prods: rows,
+        pageTitle: "All products",
+        path: "/products",
+      });
+    })
+    .catch((error) => {
+      console.log(error);
     });
-  });
 };
-// ? middleware to display carts 
+// ? middleware to display carts
 
 exports.getCart = (req, res) => {
   Cart.getCart((cart) => {
@@ -37,8 +41,8 @@ exports.postCartDeleteProduct = (req, res) => {
   const prodId = req.body.productID;
   console.log(37, prodId);
   Product.findById(prodId, (p) => {
-    Cart.deleteProduct(prodId , p.price);
-    res.redirect("/cart")
+    Cart.deleteProduct(prodId, p.price);
+    res.redirect("/cart");
   });
 };
 
@@ -51,24 +55,28 @@ exports.postCart = (req, res) => {
 
 // ? middleware for home page
 exports.getIndex = (req, res) => {
-  Product.fetchAll((product) => {
-    res.render("shop/index", {
-      prods: product,
-      pageTitle: "Home",
-      path: "/",
-    });
-  });
+  Product.fetchAll()
+    .then(([rows, fieldData]) => {
+      res.render("shop/index", {
+        prods: rows,
+        pageTitle: "Home",
+        path: "/",
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.getProduct = (req, res) => {
   const prodId = req.params.productId;
-  Product.findById(prodId, (result) => {
-    res.render("shop/product-detail", {
-      path: "/products",
-      pageTitle: result.title,
-      product: result,
-    });
-  });
+  Product.findById(prodId)
+    .then(([result]) => {
+      res.render("shop/product-detail", {
+        path: "/products",
+        pageTitle: result.title,
+        product: result[0],
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.getOrders = (req, res) => {
