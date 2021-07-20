@@ -1,41 +1,23 @@
 const Product = require("../models/product");
 const Cart = require("../models/cart");
 
+// ? middleware to display more products
+
 exports.getProducts = (req, res) => {
-  Product.fetchAll()
-    .then(([rows, fieldData]) => {
+  Product.findAll()
+    .then((products) => {
       res.render("shop/product-list", {
-        prods: rows,
+        prods: products,
         pageTitle: "All products",
         path: "/products",
       });
     })
-    .catch((error) => {
-      console.log(error);
-    });
+    .catch((err) => console.log(err));
 };
+
 // ? middleware to display carts
 
-exports.getCart = (req, res) => {
-  Cart.getCart((cart) => {
-    Product.fetchAll((products) => {
-      const cartProducts = [];
-      for (product of products) {
-        const cartProductData = cart.products.find(
-          (prod) => prod.id === product.id
-        );
-        if (cartProductData) {
-          cartProducts.push({ productData: product, qty: cartProductData.qty });
-        }
-      }
-      res.render("shop/cart", {
-        pageTitle: "Your cart",
-        path: "/cart",
-        products: cartProducts,
-      });
-    });
-  });
-};
+exports.getCart = (req, res) => {};
 
 exports.postCartDeleteProduct = (req, res) => {
   const prodId = req.body.productID;
@@ -55,11 +37,11 @@ exports.postCart = (req, res) => {
 
 // ? middleware for home page
 exports.getIndex = (req, res) => {
-  Product.fetchAll()
-    .then(([rows, fieldData]) => {
+  Product.findAll()
+    .then((products) => {
       res.render("shop/index", {
-        prods: rows,
-        pageTitle: "Home",
+        prods: products,
+        pageTitle: "All products",
         path: "/",
       });
     })
@@ -68,12 +50,12 @@ exports.getIndex = (req, res) => {
 
 exports.getProduct = (req, res) => {
   const prodId = req.params.productId;
-  Product.findById(prodId)
-    .then(([result]) => {
+  Product.findByPk(prodId)
+    .then((product) => {
       res.render("shop/product-detail", {
+        pageTitle: product.title,
+        product: product,
         path: "/products",
-        pageTitle: result.title,
-        product: result[0],
       });
     })
     .catch((err) => console.log(err));

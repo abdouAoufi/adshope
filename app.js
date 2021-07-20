@@ -14,7 +14,6 @@ app.set("views", "views");
 sequelize
   .sync()
   .then((result) => {
-     console.log(result);
     // ! the most important one start a web server .
     app.listen(3000);
   })

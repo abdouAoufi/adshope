@@ -24,14 +24,14 @@
             <div class="form-control">
                 <label for="price">Price</label>
                 <input type="text" name="price" id="price" 
-                value="<% if (editing) { %> <%= product.price %>  <% } %>"
+                value="<% if (editing) { %> <%=product.price%><% } %>"
                 >
             </div>
 
 
             <div class="form-control">
                 <label for="description">Description</label>
-                <textarea  name="description" id="description" rows="5"  ><% if (editing) { %> <%= product.descreption %>  <% } %></textarea>
+                <textarea  name="description" id="description" rows="5"  ><% if (editing) { %> <%= product.description %>  <% } %></textarea>
             </div>
 
             <% if (editing) { %>
