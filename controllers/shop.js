@@ -37,7 +37,6 @@ exports.getCart = (req, res) => {
 
 exports.postCartDeleteProduct = (req, res) => {
   const prodId = req.body.productID;
-  console.log(37, prodId);
   Product.findById(prodId, (p) => {
     Cart.deleteProduct(prodId, p.price);
     res.redirect("/cart");
@@ -45,10 +44,36 @@ exports.postCartDeleteProduct = (req, res) => {
 };
 
 exports.postCart = (req, res) => {
-  Product.findById(req.body.productId, (product) => {
-    Cart.addProduct(req.body.productId, product.price);
-  });
-  res.redirect("/cart");
+  const prodId = req.body.productId; // get product id from post request
+  let fetchcedCart;
+  let newQuantity = 1;
+  req.user
+    .getCart() // it belongs to products
+    .then((cart) => {
+      fetchcedCart = cart;
+      return cart.getProducts({ where: { id: prodId } }); // ! get products with condition not from single table 
+    })
+    .then((products) => {
+      let product;
+      if (products.length > 0) {
+        product = products[0];
+      }
+      if (product) {
+        const oldQuantity = product.cartItem.quantity;
+        newQuantity = oldQuantity + 1;
+        return product;
+      }
+      return Product.findByPk(prodId); // register new promise .
+    })
+    .then((product) => {
+      return fetchcedCart.addProduct(product, {
+        through: { quantity: newQuantity },
+      });
+    })
+    .then(() => {
+      res.redirect("/");
+    })
+    .catch((err) => console.log(err));
 };
 
 // ? middleware for home page

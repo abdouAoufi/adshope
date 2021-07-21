@@ -18,8 +18,10 @@ app.set("views", "views");
 // connect models to each other ......
 Product.belongsTo(User, { onDelete: "CASCADE", constrain: true });
 User.hasMany(Product);
+
 User.hasOne(Cart);
 Cart.belongsTo(User);
+
 Cart.belongsToMany(Product, { through: CartItem });
 Product.belongsToMany(Cart, { through: CartItem });
 
@@ -34,8 +36,8 @@ app.use((req, res, next) => {
 
 // .sync({force : true})
 sequelize
-  .sync()
-  .then((result) => {
+.sync()
+  .then(() => {
     return User.findByPk(1); // gives us promise !
   })
   .then((user) => {
@@ -47,7 +49,7 @@ sequelize
   .then((user) => {
     return user.createCart();
   })
-  .then((cart) => {
+  .then(() => {
     app.listen(3000);
   })
   .catch((err) => console.log(err));
