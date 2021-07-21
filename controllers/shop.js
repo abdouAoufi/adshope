@@ -1,5 +1,4 @@
 const Product = require("../models/product");
-const Cart = require("../models/cart");
 
 // ? middleware to display more products
 
@@ -37,10 +36,28 @@ exports.getCart = (req, res) => {
 
 exports.postCartDeleteProduct = (req, res) => {
   const prodId = req.body.productID;
-  Product.findById(prodId, (p) => {
-    Cart.deleteProduct(prodId, p.price);
-    res.redirect("/cart");
-  });
+  req.user
+    .getCart()
+    .then((cart) => {
+      return cart.getProducts({ where: { id: prodId } });
+    })
+    .then((products) => {
+      const product = products[0];
+      product.cartItem.destroy(); // access the cart item table and delete it
+    })
+    .then((result) => {
+      res.redirect("/cart");
+      console.log("DELETED ITEM ");
+    })
+    .catch((err) => console.log(err));
+  // CartItems.findAll({ where: { productId: prodId } })
+  //   .then((product) => {
+  //     return product[0].destroy();
+  //   })
+  //   .then(() => {
+  //     res.redirect("/");
+  //   })
+  //   .catch((err) => console.log(err));
 };
 
 exports.postCart = (req, res) => {
@@ -51,7 +68,7 @@ exports.postCart = (req, res) => {
     .getCart() // it belongs to products
     .then((cart) => {
       fetchcedCart = cart;
-      return cart.getProducts({ where: { id: prodId } }); // ! get products with condition not from single table 
+      return cart.getProducts({ where: { id: prodId } }); // ! get products with condition not from single table
     })
     .then((products) => {
       let product;
@@ -103,8 +120,40 @@ exports.getProduct = (req, res) => {
 };
 
 exports.getOrders = (req, res) => {
-  res.render("shop/orders", { pageTitle: "Orders", path: "/orders" });
+  req.user
+    .getOrders({include : ['products']})
+    .then((orders) => {
+      res.render("shop/orders", { pageTitle: "Orders", path: "/orders" , orders : orders });
+    })
+    .catch((err) => console.log(err));
 };
 exports.getCheckout = (req, res) => {
   res.render("/shop/checkout", { pageTitle: "Checkout page" });
+};
+
+exports.postOrder = (req, res) => {
+  let fetchedCart;
+  req.user
+    .getCart()
+    .then((cart) => {
+      fetchedCart = cart;
+      return cart.getProducts();
+    })
+    .then((products) => {
+      return req.user.createOrder().then((order) => {
+        return order.addProducts(
+          products.map((product) => {
+            product.orderItem = { quantity: product.cartItem.quantity };
+            return product;
+          })
+        );
+      });
+    })
+    .then((result) => {
+      return fetchedCart.setProducts(null);
+    })
+    .then((result) => {
+      res.redirect("/orders");
+    })
+    .catch((err) => console.log(err));
 };
