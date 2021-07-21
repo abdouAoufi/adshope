@@ -17,7 +17,23 @@ exports.getProducts = (req, res) => {
 
 // ? middleware to display carts
 
-exports.getCart = (req, res) => {};
+exports.getCart = (req, res) => {
+  req.user
+    .getCart()
+    .then((cart) => {
+      return cart
+        .getProducts()
+        .then((products) => {
+          res.render("shop/cart", {
+            path: "/cart",
+            pageTitle: "Your cart",
+            products: products,
+          });
+        })
+        .catch((err) => console.log(err));
+    })
+    .catch((err) => console.log(err));
+};
 
 exports.postCartDeleteProduct = (req, res) => {
   const prodId = req.body.productID;
