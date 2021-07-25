@@ -44,31 +44,13 @@ exports.getCart = (req, res) => {
   });
 };
 
-// exports.postCartDeleteProduct = (req, res) => {
-//   const prodId = req.body.productID;
-//   req.user
-//     .getCart()
-//     .then((cart) => {
-//       return cart.getProducts({ where: { id: prodId } });
-//     })
-//     .then((products) => {
-//       const product = products[0];
-//       product.cartItem.destroy(); // access the cart item table and delete it
-//     })
-//     .then((result) => {
-//       res.redirect("/cart");
-//       console.log("DELETED ITEM ");
-//     })
-//     .catch((err) => console.log(err));
-// CartItems.findAll({ where: { productId: prodId } })
-//   .then((product) => {
-//     return product[0].destroy();
-//   })
-//   .then(() => {
-//     res.redirect("/");
-//   })
-//   .catch((err) => console.log(err));
-// };
+exports.postCartDeleteProduct = (req, res) => {
+  const prodId = req.body.productID;
+  const user = req.user;
+  user.deleteById(prodId).then((result) => {
+    res.redirect("/cart");
+  });
+};
 
 exports.postCart = (req, res) => {
   const prodId = req.body.productId; // get product id from post request
