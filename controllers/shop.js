@@ -35,12 +35,13 @@ exports.getIndex = (req, res) => {
 // ? middleware to display carts
 
 exports.getCart = (req, res) => {
-
+  req.user.getCart().then((products) => {
     res.render("shop/cart", {
       path: "/cart",
       pageTitle: "Your cart",
       products: products,
     });
+  });
 };
 
 // exports.postCartDeleteProduct = (req, res) => {

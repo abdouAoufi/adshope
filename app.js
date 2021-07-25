@@ -13,29 +13,14 @@ const { log } = require("console");
 app.set("view engine", "ejs");
 app.set("views", "views");
 
-/* 
-app.get("/add-user", (req, res) => {
-  const user = new User("Abduo", "Abdou@gmail.com");
-  user
-    .save()
-    .then((result) => {
-      res.redirect("/");
-      console.log("Created success");
-    })
-    .catch((err) => console.log(err));
-}); 
-*/
-
-
-
 // parse incoming requests ..
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
 app.use((req, res, next) => {
-  User.findById("60fd61e7fdad1a3c304efd01")
+  User.findById("60fda764d916da7cb0146fe1")
     .then((user) => {
-      req.user = user;
+      req.user = new User(user.name , user.email , user.cart , user._id) ;
       next();
     })
     .catch((err) => console.log(err));

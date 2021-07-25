@@ -34,7 +34,6 @@ class Product {
       .find({ _id: new mongoDb.ObjectId(id) })
       .next()
       .then((product) => {
-        console.log(26, product);
         return product;
       })
       .catch((err) => console.log(err));
