@@ -22,7 +22,7 @@ router.get("/products", shopController.getProducts);
 // router.post("/create-order" , shopController.postOrder)
 
 // this is dynamic link ......
-// router.get("/products/:productId" , shopController.getProduct);
+router.get("/products/:productId" , shopController.getProduct);
 
 
 module.exports = router;

@@ -22,26 +22,25 @@ exports.postAddProduct = (req, res) => {
     .catch((err) => console.log(err));
 };
 
-// exports.getEditProduct = (req, res) => {
-//   const editMode = req.query.edit;
-//   const idProduct = req.params.productId;
+exports.getEditProduct = (req, res) => {
+  const editMode = req.query.edit;
+  const idProduct = req.params.productId;
 
-//   if (!editMode) {
-//     res.redirect("/");
-//   } else {
-//     req.user
-//       .getProducts({ where: { id: idProduct } })
-//       .then((products) => {
-//         res.render("admin/edit-product", {
-//           pageTitle: "Edit Product",
-//           product: products[0],
-//           path: "/admin/edit-product",
-//           editing: editMode,
-//         });
-//       })
-//       .catch((err) => console.log(err));
-//   }
-// };
+  if (!editMode) {
+    res.redirect("/");
+  } else {
+    Product.findById(idProduct)
+      .then((product) => {
+        res.render("admin/edit-product", {
+          pageTitle: "Edit Product",
+          product: product,
+          path: "/admin/edit-product",
+          editing: editMode,
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+};
 
 // get porducts for admin page
 exports.getProducts = (req, res) => {
@@ -60,14 +59,15 @@ exports.postEditProduct = (req, res) => {
   const updatedPrice = req.body.price;
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesreption = req.body.description;
-  Product.findByPk(prodId)
-    .then((prod) => {
-      prod.title = updatedTitle;
-      prod.price = updatedPrice;
-      prod.imageUrl = updatedImageUrl;
-      prod.description = updatedDesreption;
-      return prod.save();
-    })
+  const product = new Product(
+    updatedTitle,
+    updatedPrice,
+    updatedDesreption,
+    updatedImageUrl,
+    prodId
+  );
+  product
+    .save()
     .then((result) => res.redirect("/"))
     .catch((err) => console.log(err));
 };

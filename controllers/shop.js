@@ -5,6 +5,7 @@ const Product = require("../models/product");
 exports.getProducts = (req, res) => {
   Product.fetchAll()
     .then((products) => {
+      displayProducts(products);
       res.render("shop/product-list", {
         prods: products,
         pageTitle: "All products",
@@ -14,6 +15,9 @@ exports.getProducts = (req, res) => {
     .catch((err) => console.log(err));
 };
 
+function displayProducts(products) {
+  products.forEach((product) => console.log(product._id.toString()));
+}
 
 // ? middleware for home page
 exports.getIndex = (req, res) => {
@@ -27,7 +31,6 @@ exports.getIndex = (req, res) => {
     })
     .catch((err) => console.log(err));
 };
-
 
 // ? middleware to display carts
 
@@ -65,14 +68,14 @@ exports.getIndex = (req, res) => {
 //       console.log("DELETED ITEM ");
 //     })
 //     .catch((err) => console.log(err));
-  // CartItems.findAll({ where: { productId: prodId } })
-  //   .then((product) => {
-  //     return product[0].destroy();
-  //   })
-  //   .then(() => {
-  //     res.redirect("/");
-  //   })
-  //   .catch((err) => console.log(err));
+// CartItems.findAll({ where: { productId: prodId } })
+//   .then((product) => {
+//     return product[0].destroy();
+//   })
+//   .then(() => {
+//     res.redirect("/");
+//   })
+//   .catch((err) => console.log(err));
 // };
 
 // exports.postCart = (req, res) => {
@@ -108,19 +111,21 @@ exports.getIndex = (req, res) => {
 //     .catch((err) => console.log(err));
 // };
 
+exports.getProduct = (req, res) => {
+  const prodId = req.params.productId;
+  
+  Product.findById(prodId)
+    .then((product) => {
+      res.render("shop/product-detail", {
+        pageTitle: product.title,
+        product: product,
+        path: "/products",
+      });
+    })
+    .catch((err) => console.log(err));
 
-// exports.getProduct = (req, res) => {
-//   const prodId = req.params.productId;
-//   Product.findByPk(prodId)
-//     .then((product) => {
-//       res.render("shop/product-detail", {
-//         pageTitle: product.title,
-//         product: product,
-//         path: "/products",
-//       });
-//     })
-//     .catch((err) => console.log(err));
-// };
+  // .catch((err) => console.log(err));
+};
 
 // exports.getOrders = (req, res) => {
 //   req.user
