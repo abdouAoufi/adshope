@@ -12,43 +12,40 @@ exports.postAddProduct = (req, res) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  console.log(37, req.user.dataValues.id);
-  req.user
-    .createProduct({
-      title: title,
-      imageUrl: imageUrl,
-      price: price,
-      description: description,
+  const product = new Product(title, price, description, imageUrl);
+  product
+    .save()
+    .then((result) => {
+      console.log("created");
+      res.redirect("/admin/add-product");
     })
-    .then((result) => res.redirect("/admin/products"))
     .catch((err) => console.log(err));
-  res.redirect("/admin/add-product");
 };
 
-exports.getEditProduct = (req, res) => {
-  const editMode = req.query.edit;
-  const idProduct = req.params.productId;
+// exports.getEditProduct = (req, res) => {
+//   const editMode = req.query.edit;
+//   const idProduct = req.params.productId;
 
-  if (!editMode) {
-    res.redirect("/");
-  } else {
-    req.user
-      .getProducts({ where: { id: idProduct } })
-      .then((products) => {
-        res.render("admin/edit-product", {
-          pageTitle: "Edit Product",
-          product: products[0],
-          path: "/admin/edit-product",
-          editing: editMode,
-        });
-      })
-      .catch((err) => console.log(err));
-  }
-};
+//   if (!editMode) {
+//     res.redirect("/");
+//   } else {
+//     req.user
+//       .getProducts({ where: { id: idProduct } })
+//       .then((products) => {
+//         res.render("admin/edit-product", {
+//           pageTitle: "Edit Product",
+//           product: products[0],
+//           path: "/admin/edit-product",
+//           editing: editMode,
+//         });
+//       })
+//       .catch((err) => console.log(err));
+//   }
+// };
 
 // get porducts for admin page
 exports.getProducts = (req, res) => {
-  req.user.getProducts().then((products) => {
+  Product.fetchAll().then((products) => {
     res.render("admin/products", {
       prods: products,
       pageTitle: "Admin products",

@@ -8,7 +8,7 @@ const mongoConnect = (callback) => {
     .then((client) => {
       console.log("Connected !!");
       _db = client.db();
-      callback(result);
+      callback();
     })
     .catch((err) => {
       console.log(err);
