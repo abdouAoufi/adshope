@@ -34,23 +34,14 @@ exports.getIndex = (req, res) => {
 
 // ? middleware to display carts
 
-// exports.getCart = (req, res) => {
-//   req.user
-//     .getCart()
-//     .then((cart) => {
-//       return cart
-//         .getProducts()
-//         .then((products) => {
-//           res.render("shop/cart", {
-//             path: "/cart",
-//             pageTitle: "Your cart",
-//             products: products,
-//           });
-//         })
-//         .catch((err) => console.log(err));
-//     })
-//     .catch((err) => console.log(err));
-// };
+exports.getCart = (req, res) => {
+
+    res.render("shop/cart", {
+      path: "/cart",
+      pageTitle: "Your cart",
+      products: products,
+    });
+};
 
 // exports.postCartDeleteProduct = (req, res) => {
 //   const prodId = req.body.productID;
@@ -78,42 +69,21 @@ exports.getIndex = (req, res) => {
 //   .catch((err) => console.log(err));
 // };
 
-// exports.postCart = (req, res) => {
-//   const prodId = req.body.productId; // get product id from post request
-//   let fetchcedCart;
-//   let newQuantity = 1;
-//   req.user
-//     .getCart() // it belongs to products
-//     .then((cart) => {
-//       fetchcedCart = cart;
-//       return cart.getProducts({ where: { id: prodId } }); // ! get products with condition not from single table
-//     })
-//     .then((products) => {
-//       let product;
-//       if (products.length > 0) {
-//         product = products[0];
-//       }
-//       if (product) {
-//         const oldQuantity = product.cartItem.quantity;
-//         newQuantity = oldQuantity + 1;
-//         return product;
-//       }
-//       return Product.findByPk(prodId); // register new promise .
-//     })
-//     .then((product) => {
-//       return fetchcedCart.addProduct(product, {
-//         through: { quantity: newQuantity },
-//       });
-//     })
-//     .then(() => {
-//       res.redirect("/");
-//     })
-//     .catch((err) => console.log(err));
-// };
+exports.postCart = (req, res) => {
+  const prodId = req.body.productId; // get product id from post request
+  Product.findById(prodId)
+    .then((product) => {
+      console.log("Product found is => ", product);
+      return req.user.addToCart(product);
+    })
+    .then((result) => {
+      res.redirect("/");
+    });
+};
 
 exports.getProduct = (req, res) => {
   const prodId = req.params.productId;
-  
+
   Product.findById(prodId)
     .then((product) => {
       res.render("shop/product-detail", {
@@ -123,8 +93,6 @@ exports.getProduct = (req, res) => {
       });
     })
     .catch((err) => console.log(err));
-
-  // .catch((err) => console.log(err));
 };
 
 // exports.getOrders = (req, res) => {
