@@ -77,6 +77,57 @@ class User {
       })
       .catch((err) => console.log(err));
   }
+
+  addOrder() {
+    const db = getDb();
+    return this.getCart()
+      .then((products) => {
+        const order = {
+          items: products,
+          user: {
+            _id: new mongoConnect.ObjectId(this._id),
+            name: this.name,
+          },
+        };
+        return db.collection("orders").insertOne(order);
+      })
+      .then((result) => {
+        this.cart = { items: [] };
+        return db
+          .collection("users")
+          .updateOne(
+            { _id: new mongoConnect.ObjectId(this._id) },
+            { $set: { cart: { items: [] } } }
+          );
+      });
+  }
+
+  getOrders() {
+    const db = getDb();
+    return db
+      .collection("orders")
+      .find({ "user._id": new mongoConnect.ObjectId(this._id) })
+      .toArray();
+  }
+
+  deleteById(prodId) {
+    const db = getDb();
+    let updatedList = [...this.cart.items];
+    updatedList = updatedList.filter((prod) => {
+      return prod.productId.toString() !== prodId.toString();
+    });
+    const updatedCart = {
+      items: updatedList,
+    };
+    return db
+      .collection("users")
+      .updateOne(
+        { _id: new mongoConnect.ObjectId(this._id) },
+        { $set: { cart: updatedCart } }
+      )
+      .then((result) => console.log(result))
+      .catch((err) => console.log(err));
+  }
 }
 
 module.exports = User;
