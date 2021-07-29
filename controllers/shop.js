@@ -3,9 +3,9 @@ const Product = require("../models/product");
 // ? middleware to display more products
 
 exports.getProducts = (req, res) => {
-  Product.fetchAll()
+  Product.find()
     .then((products) => {
-      displayProducts(products);
+      console.log(products);
       res.render("shop/product-list", {
         prods: products,
         pageTitle: "All products",
@@ -15,13 +15,9 @@ exports.getProducts = (req, res) => {
     .catch((err) => console.log(err));
 };
 
-function displayProducts(products) {
-  products.forEach((product) => console.log(product._id.toString()));
-}
-
 // ? middleware for home page
 exports.getIndex = (req, res) => {
-  Product.fetchAll()
+  Product.find()
     .then((products) => {
       res.render("shop/index", {
         prods: products,
