@@ -7,7 +7,9 @@ const bodyParser = require("body-parser"); // tool to decode incoming requests .
 const app = express(); // start the app ....
 const mongoConnect = require("./util/database").mongoConnect;
 const User = require("./models/user");
-const { log } = require("console");
+
+
+
 
 // set up a view engine in our case is EJS
 app.set("view engine", "ejs");
@@ -16,9 +18,9 @@ app.set("views", "views");
 // parse incoming requests ..
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
 app.use((req, res, next) => {
-  User.findById("60fda764d916da7cb0146fe1")
+
+  User.findById("61027d23f33b5343c02b0314")
     .then((user) => {
       req.user = new User(user.name , user.email , user.cart , user._id) ;
       next();
@@ -34,6 +36,7 @@ app.use(shopRoutes);
 app.use("/admin", adminRouter);
 app.use(errorController.notFound);
 
-mongoConnect(() => {
-  app.listen(3000);
-});
+
+
+
+// app.listen(3000)
