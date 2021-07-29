@@ -1,5 +1,4 @@
-INSERT INTO `node_schema`.`products` (`title`, `price`, `description`) VALUES ('Iphone xs', '899', 'Iphone xs new ');
-
+// INSERT INTO `node_schema`.`products` (`title`, `price`, `description`) VALUES ('Iphone xs', '899', 'Iphone xs new ');
 
 module.exports = class Product {
   constructor(id, title, imageUrl, description, price) {
@@ -25,7 +24,6 @@ module.exports = class Product {
     return db.execute("SELECT * FROM products WHERE id = ?", [id]);
   }
 };
-
 
 const fs = require("fs");
 const path = require("path");
@@ -99,8 +97,6 @@ module.exports = class Cart {
   }
 };
 
-
-
 const express = require("express"); // express framework
 const path = require("path"); // file system module
 const errorController = require("./controllers/error"); // controller
@@ -147,7 +143,7 @@ app.use((req, res, next) => {
 // .sync()
 
 sequelize
-.sync({force : true})
+  .sync({ force: true })
   .then(() => {
     return User.findByPk(1); // gives us promise !
   })
@@ -176,7 +172,6 @@ app.use(shopRoutes);
 app.use("/admin", adminRouter);
 app.use(errorController.notFound);
 
-
 const sequilize = require("../util/database");
 const { Sequilize, DataTypes } = require("sequelize");
 
@@ -187,11 +182,10 @@ const CartItem = sequilize.define("cartItem", {
     allowNull: false,
     primaryKey: true,
   },
-  quantity : DataTypes.INTEGER
+  quantity: DataTypes.INTEGER,
 });
 
 module.exports = CartItem;
-
 
 const sequilize = require("../util/database");
 const { Sequilize, DataTypes } = require("sequelize");
@@ -206,7 +200,6 @@ const Order = sequilize.define("order", {
 });
 
 module.exports = Order;
-
 
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../util/database");
@@ -223,8 +216,6 @@ const User = sequelize.define("user", {
 });
 
 module.exports = User;
-
-
 
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../util/database");
@@ -251,8 +242,7 @@ const Product = sequelize.define("product", {
   },
 });
 
-
-module.exports = Product ;
+module.exports = Product;
 
 const Product = require("../models/product");
 
@@ -344,7 +334,6 @@ exports.deleteProduct = (req, res) => {
     .catch((err) => console.log(err));
 };
 
-
 const Product = require("../models/product");
 
 // ? middleware to display more products
@@ -397,14 +386,14 @@ exports.getProducts = (req, res) => {
 //       console.log("DELETED ITEM ");
 //     })
 //     .catch((err) => console.log(err));
-  // CartItems.findAll({ where: { productId: prodId } })
-  //   .then((product) => {
-  //     return product[0].destroy();
-  //   })
-  //   .then(() => {
-  //     res.redirect("/");
-  //   })
-  //   .catch((err) => console.log(err));
+// CartItems.findAll({ where: { productId: prodId } })
+//   .then((product) => {
+//     return product[0].destroy();
+//   })
+//   .then(() => {
+//     res.redirect("/");
+//   })
+//   .catch((err) => console.log(err));
 // };
 
 exports.postCart = (req, res) => {

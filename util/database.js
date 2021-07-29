@@ -1,9 +1,11 @@
 const mongodb = require("mongodb");
 const MongoClient = mongodb.MongoClient;
 let _db;
+const url = 'mongodb://127.0.0.1:27017'
+
 const mongoConnect = (callback) => {
   MongoClient.connect(
-    "mongodb+srv://abbdou:abdoumca1921@firsttry.vojoa.mongodb.net/shop?retryWrites=true&w=majority"
+    url
   )
     .then((client) => {
       console.log("Connected !!");
