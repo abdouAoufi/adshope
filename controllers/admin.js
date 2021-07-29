@@ -12,7 +12,13 @@ exports.postAddProduct = (req, res) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const desc = req.body.description;
-  const product = new Product({ title, price, desc, imageUrl });
+  const product = new Product({
+    title,
+    price,
+    desc,
+    imageUrl,
+    userId: req.user,
+  });
   // we have save method
   product
     .save()
@@ -44,13 +50,16 @@ exports.getEditProduct = (req, res) => {
 
 // get porducts for admin page
 exports.getProducts = (req, res) => {
-  Product.find().then((products) => {
-    res.render("admin/products", {
-      prods: products,
-      pageTitle: "Admin products",
-      path: "/admin/products",
+  Product.find()
+    .populate('userId')
+    .then((products) => {
+      console.log(products)
+      res.render("admin/products", {
+        prods: products,
+        pageTitle: "Admin products",
+        path: "/admin/products",
+      });
     });
-  });
 };
 
 exports.postEditProduct = (req, res) => {
