@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const Order = require("../models/order");
 
 // ? middleware to display more products
 
@@ -77,8 +78,7 @@ exports.getProduct = (req, res) => {
 };
 
 exports.getOrders = (req, res) => {
-  req.user
-    .getOrders()
+  Order.find({ "user.userId": req.user._id })
     .then((orders) => {
       res.render("shop/orders", {
         pageTitle: "Orders",
@@ -93,10 +93,26 @@ exports.getCheckout = (req, res) => {
 };
 
 exports.postOrder = (req, res) => {
-  let fetchedCart;
   req.user
-    .addOrder()
+    .populate("cart.items.productId")
+    .execPopulate()
+    .then((user) => {
+      const products = user.cart.items.map((i) => {
+        return {
+          quantity: i.quantity,
+          product: { ...i.productId._doc }, // get the produtcts with its data
+        };
+      });
+      const order = new Order({
+        user: { name: req.user.name, userId: req.user },
+        products: products,
+      });
+      return order.save();
+    })
     .then((result) => {
+      return req.user.clearCart();
+    })
+    .then(() => {
       res.redirect("/orders");
     })
     .catch((err) => console.log(err));

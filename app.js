@@ -13,7 +13,7 @@ const url = "mongodb://localhost:27017/";
 mongoose
   .connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    User.findOne()
+    User.findOne() // give the first user
       .then((user) => {
         if (!user) {
           const user = new User({
