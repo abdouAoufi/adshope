@@ -31,19 +31,22 @@ exports.getIndex = (req, res) => {
 // ? middleware to display carts
 
 exports.getCart = (req, res) => {
-  req.user.getCart().then((products) => {
-    res.render("shop/cart", {
-      path: "/cart",
-      pageTitle: "Your cart",
-      products: products,
+  req.user
+    .populate("cart.items.productId")
+    .execPopulate()
+    .then((user) => {
+      res.render("shop/cart", {
+        path: "/cart",
+        pageTitle: "Your cart",
+        products: user.cart.items,
+      });
     });
-  });
 };
 
 exports.postCartDeleteProduct = (req, res) => {
   const prodId = req.body.productID;
-  const user = req.user;
-  user.deleteById(prodId).then((result) => {
+  // console.log("=========",req.user.deleteCart);
+  req.user.deleteCart(prodId).then((result) => {
     res.redirect("/cart");
   });
 };
@@ -52,7 +55,6 @@ exports.postCart = (req, res) => {
   const prodId = req.body.productId; // get product id from post request
   Product.findById(prodId)
     .then((product) => {
-      console.log("Product found is => ", product);
       return req.user.addToCart(product);
     })
     .then((result) => {
