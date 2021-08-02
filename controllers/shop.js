@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 const Order = require("../models/order");
+const order = require("../models/order");
 
 // ? GET HOME PAGE
 exports.getIndex = (req, res) => {
@@ -112,6 +113,14 @@ exports.getOrders = (req, res) => {
         path: "/orders",
         orders: orders,
       });
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.deleteOrder = (req, res, next) => {
+  Order.deleteMany({ "user.userId": req.user._id })
+    .then(() => {
+      res.redirect("/");
     })
     .catch((err) => console.log(err));
 };

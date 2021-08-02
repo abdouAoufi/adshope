@@ -20,6 +20,8 @@ router.get("/orders" , shopController.getOrders)
 
 router.post("/create-order" , shopController.postOrder)
 
+router.get("/delete-order" , shopController.deleteOrder);
+
 // this is dynamic link ......
 router.get("/products/:productId" , shopController.getProduct);
 

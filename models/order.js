@@ -15,4 +15,8 @@ const orderSchema = new Schema({
   },
 });
 
+orderSchema.methods.deletOrder = function(userId){
+  
+}
+
 module.exports = mongoose.model("Order", orderSchema);
