@@ -7,12 +7,15 @@ const authRouter = require("./routes/authRouter");
 const bodyParser = require("body-parser"); // tool to decode incoming requests ...
 const User = require("./models/user"); // user model
 const mongoose = require("mongoose"); // user model
+const session = require("express-session"); // session
+const MongoDbStore = require("connect-mongodb-session")(session); // store sessions ....
+const MONGODBURL = "mongodb://localhost:27017/"; // URL where we store database ...
 
 const app = express(); // start the app ....
+const store = new MongoDbStore({ uri: MONGODBURL, collection: "sessions" });
 
-const url = "mongodb://localhost:27017/";
 mongoose
-  .connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(MONGODBURL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     User.findOne() // give the first user
       .then((user) => {
@@ -31,26 +34,40 @@ mongoose
   })
   .catch((err) => console.log(err));
 
-// ! set up a view engine in our case is EJS
+// ? set up a view engine in our case is EJS
 app.set("view engine", "ejs");
 app.set("views", "views");
 
-// ! use static files ....
+// ? use static files ....
 app.use(express.static(path.join(__dirname, "public")));
 
-// ! parse incoming requests ..
+// ? parse incoming requests ..
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// ? using middleware routers ...
+app.use(
+  session({
+    secret: "my secrec",
+    resave: false,
+    saveUninitialized: false,
+    store: store, // store sessions in mongoDB
+  }) // ! set up session
+);
+
 app.use((req, res, next) => {
-  User.findById("6102b1d12e4a912f9bc1e026")
+  if(!req.session.user){
+    return next();
+  }
+  User.findById(req.session.user._id)
     .then((user) => {
-      req.user = user;
+      req.user = user; // ! IT'S MONGOOSE OBJECT BUT IT WAS FILLED BY SESSION DATA 
       next();
     })
     .catch((err) => console.log(err));
 });
 
-// using middleware routers ...
+ 
+
 app.use(shopRoutes);
 app.use("/admin", adminRouter);
 app.use(authRouter);

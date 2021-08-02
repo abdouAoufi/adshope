@@ -4,13 +4,14 @@ const order = require("../models/order");
 
 // ? GET HOME PAGE
 exports.getIndex = (req, res) => {
+  console.log(req.session.user)
   Product.find()
     .then((products) => {
       res.render("shop/index", {
         prods: products,
         pageTitle: "All products",
         path: "/",
-        isAuthenticated : req.iseLoggedIn,
+        isAuthenticated : req.session.isLoggedIn,
       });
     })
     .catch((err) => console.log(err));
@@ -24,7 +25,7 @@ exports.getProducts = (req, res) => {
         prods: products,
         pageTitle: "All products",
         path: "/products",
-        isAuthenticated : req.iseLoggedIn,
+        isAuthenticated : req.session.isLoggedIn,
       });
     })
     .catch((err) => console.log(err));
@@ -40,7 +41,7 @@ exports.getCart = (req, res) => {
         path: "/cart",
         pageTitle: "Your cart",
         products: user.cart.items,
-        isAuthenticated : req.iseLoggedIn,
+        isAuthenticated : req.session.isLoggedIn,
       });
     });
 };
@@ -74,6 +75,7 @@ exports.getProduct = (req, res) => {
         pageTitle: product.title,
         product: product,
         path: "/products",
+        isAuthenticated : req.session.isLoggedIn,
       });
     })
     .catch((err) => console.log(err));
@@ -114,6 +116,7 @@ exports.getOrders = (req, res) => {
         pageTitle: "Orders",
         path: "/orders",
         orders: orders,
+        isAuthenticated : req.session.isLoggedIn
       });
     })
     .catch((err) => console.log(err));

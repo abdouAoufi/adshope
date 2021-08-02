@@ -7,5 +7,7 @@ const router = express.Router();
 router.get("/login", authController.getLogin);
 // ? POST REQUEST
 router.post("/login", authController.postLogin);
+// ? POST REQUEST
+router.post("/logout" , authController.postLogout)
 
 module.exports = router;
