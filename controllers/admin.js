@@ -43,6 +43,7 @@ exports.getEditProduct = (req, res) => {
           product: product,
           path: "/admin/edit-product",
           editing: editMode,
+          isAuthenticated : req.iseLoggedIn,
         });
       })
       .catch((err) => console.log(err));
@@ -59,6 +60,7 @@ exports.getProducts = (req, res) => {
         prods: products,
         pageTitle: "Admin products",
         path: "/admin/products",
+        isAuthenticated : req.iseLoggedIn,
       });
     });
 };

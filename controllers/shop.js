@@ -10,6 +10,7 @@ exports.getIndex = (req, res) => {
         prods: products,
         pageTitle: "All products",
         path: "/",
+        isAuthenticated : req.iseLoggedIn,
       });
     })
     .catch((err) => console.log(err));
@@ -19,11 +20,11 @@ exports.getIndex = (req, res) => {
 exports.getProducts = (req, res) => {
   Product.find()
     .then((products) => {
-      console.log(products);
       res.render("shop/product-list", {
         prods: products,
         pageTitle: "All products",
         path: "/products",
+        isAuthenticated : req.iseLoggedIn,
       });
     })
     .catch((err) => console.log(err));
@@ -39,6 +40,7 @@ exports.getCart = (req, res) => {
         path: "/cart",
         pageTitle: "Your cart",
         products: user.cart.items,
+        isAuthenticated : req.iseLoggedIn,
       });
     });
 };

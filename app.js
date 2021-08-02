@@ -3,6 +3,7 @@ const path = require("path"); // file system module
 const errorController = require("./controllers/error"); // controller
 const adminRouter = require("./routes/adminRoute"); // route
 const shopRoutes = require("./routes/shopRoute"); // route
+const authRouter = require("./routes/authRouter");
 const bodyParser = require("body-parser"); // tool to decode incoming requests ...
 const User = require("./models/user"); // user model
 const mongoose = require("mongoose"); // user model
@@ -52,5 +53,5 @@ app.use((req, res, next) => {
 // using middleware routers ...
 app.use(shopRoutes);
 app.use("/admin", adminRouter);
+app.use(authRouter);
 app.use(errorController.notFound);
-
