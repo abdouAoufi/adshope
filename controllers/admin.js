@@ -1,5 +1,5 @@
 const Product = require("../models/product");
-
+// ? GET ADD PRODUCT ADMIN 
 exports.getAddProduct = (req, res) => {
   res.render("admin/edit-product", {
     pageTitle: "Add Product",
@@ -7,6 +7,7 @@ exports.getAddProduct = (req, res) => {
     editing: false,
   });
 };
+// ? POST ADD PRODUCT ADMIN 
 exports.postAddProduct = (req, res) => {
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
@@ -27,7 +28,7 @@ exports.postAddProduct = (req, res) => {
     })
     .catch((err) => console.log(err));
 };
-
+// ? GET EDIT PRODUCT
 exports.getEditProduct = (req, res) => {
   const editMode = req.query.edit;
   const idProduct = req.params.productId;
@@ -48,7 +49,7 @@ exports.getEditProduct = (req, res) => {
   }
 };
 
-// get porducts for admin page
+// ? GET PRODUCTS FOR ADMIN PAGE
 exports.getProducts = (req, res) => {
   Product.find()
     .populate('userId')
@@ -62,6 +63,7 @@ exports.getProducts = (req, res) => {
     });
 };
 
+// ? POST EDIT PRODUCT 
 exports.postEditProduct = (req, res) => {
   const prodId = req.body.productId;
   const updatedTitle = req.body.title;
@@ -74,12 +76,12 @@ exports.postEditProduct = (req, res) => {
       product.price = updatedPrice;
       product.desc = updatedDesreption;
       product.imageUrl = updatedImageUrl;
-      product.save();
+      return product.save();
     })
     .then((result) => res.redirect("/"))
     .catch((err) => console.log(err));
 };
-
+// ? DELETE PRODUCT
 exports.deleteProduct = (req, res) => {
   const prodId = req.body.productId;
   Product.findByIdAndRemove(prodId)
