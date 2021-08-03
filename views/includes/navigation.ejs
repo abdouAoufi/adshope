@@ -37,16 +37,20 @@
       <% } %>
     </ul>
     <ul class="main-header__item-list">
-        <% if(!isAuthenticated) {%>
-        <li class="main-header__item"><a href="/login">Login</a></li>
-        <% } else {%> 
-        <li class="main-header__item">
-          <form action="/logout" method="post">
-            <button class="btn" type="submit">log out</button>
-          </form>
-        </li>
-        <% } %> 
-      </ul>
-    
+      <% if(!isAuthenticated) {%>
+      <li class="main-header__item"><a class = "<%= path === '/login' ? 'active' : '' %>" href="/login">Login</a></li>
+      <li class="main-header__item">
+        <a class="<%= path === '/signup' ? 'active' : '' %>" href="/signup"
+          >Signup</a
+        >
+      </li>
+      <% } else {%>
+      <li class="main-header__item">
+        <form action="/logout" method="post">
+          <button class="btn" type="submit">log out</button>
+        </form>
+      </li>
+      <% } %>
+    </ul>
   </nav>
 </header>

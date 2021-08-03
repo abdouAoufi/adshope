@@ -21,6 +21,19 @@ exports.postLogin = (req, res) => {
     .catch((err) => console.log(err));
 };
 
+
+exports.getSignup = (req, res, next) => {
+  res.render('auth/signup', {
+    path: '/signup',
+    pageTitle: 'Signup',
+    isAuthenticated: false
+  });
+};
+
+
+exports.postSignup = (req, res, next) => {};
+
+
 exports.postLogout = (req, res) => {
   req.session.destroy((err) => {
     console.log(err);
