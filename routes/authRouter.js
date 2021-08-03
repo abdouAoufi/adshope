@@ -3,9 +3,9 @@ const express = require("express");
 const authController = require("../controllers/auth");
 
 const router = express.Router();
-// ? GET REQUEST
+// ? GET REQUEST LOGIN
 router.get("/login", authController.getLogin);
-// ? POST REQUEST
+// ? POST REQUEST LOGIN 
 router.post("/login", authController.postLogin);
 // ? POST REQUEST
 router.post("/logout" , authController.postLogout)
