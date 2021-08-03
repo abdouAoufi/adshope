@@ -9,10 +9,15 @@ const User = require("./models/user"); // user model
 const mongoose = require("mongoose"); // user model
 const session = require("express-session"); // session
 const MongoDbStore = require("connect-mongodb-session")(session); // store sessions ....
+const csrf = require("csurf"); // protecting against CSRF
+const flash = require("connect-flash"); // for sending data to the client on the session
+
 const MONGODBURL = "mongodb://localhost:27017/"; // URL where we store database ...
 
 const app = express(); // start the app ....
 const store = new MongoDbStore({ uri: MONGODBURL, collection: "sessions" });
+
+const csrfProtection = csrf(); // for sucurity
 
 mongoose
   .connect(MONGODBURL, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -43,6 +48,8 @@ app.use(
   }) // ! set up session
 );
 
+app.use(flash());
+
 app.use((req, res, next) => {
   if (!req.session.user) {
     return next();
@@ -53,6 +60,14 @@ app.use((req, res, next) => {
       next();
     })
     .catch((err) => console.log(err));
+});
+
+app.use(csrfProtection);
+
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.csrfToken = req.csrfToken();
+  next();
 });
 
 app.use(shopRoutes);

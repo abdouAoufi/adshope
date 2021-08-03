@@ -4,3 +4,14 @@
   margin: auto;
   display: block;
 }
+
+
+.error-message {
+  border-radius: 3px;
+  width: 40%;
+  margin: auto;
+  text-align: center;
+  border: 1px solid salmon;
+  background: rgba(250, 128, 114, 0.822);
+  padding: 6px 12px;
+}
