@@ -17,21 +17,10 @@ const store = new MongoDbStore({ uri: MONGODBURL, collection: "sessions" });
 mongoose
   .connect(MONGODBURL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    User.findOne() // give the first user
-      .then((user) => {
-        if (!user) {
-          const user = new User({
-            name: "Abdou",
-            email: "Abdou@gmail.com",
-            cart: { items: [] },
-          });
-          user.save();
-        }
-      })
-      .catch((err) => console.log(err));
     console.log("The server running on 127.0.0.1:3000");
     app.listen(3000);
   })
+
   .catch((err) => console.log(err));
 
 // ? set up a view engine in our case is EJS
@@ -55,18 +44,16 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  if(!req.session.user){
+  if (!req.session.user) {
     return next();
   }
   User.findById(req.session.user._id)
     .then((user) => {
-      req.user = user; // ! IT'S MONGOOSE OBJECT BUT IT WAS FILLED BY SESSION DATA 
+      req.user = user; // ! IT'S MONGOOSE OBJECT BUT IT WAS FILLED BY SESSION DATA
       next();
     })
     .catch((err) => console.log(err));
 });
-
- 
 
 app.use(shopRoutes);
 app.use("/admin", adminRouter);
