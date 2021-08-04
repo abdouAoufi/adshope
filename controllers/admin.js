@@ -1,14 +1,14 @@
 const Product = require("../models/product");
-// ? GET ADD PRODUCT ADMIN 
+// ? GET ADD PRODUCT ADMIN
 exports.getAddProduct = (req, res) => {
   res.render("admin/edit-product", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
-    isAuthenticated : req.session.isLoggedIn,
+    isAuthenticated: req.session.isLoggedIn,
   });
 };
-// ? POST ADD PRODUCT ADMIN 
+// ? POST ADD PRODUCT ADMIN
 exports.postAddProduct = (req, res) => {
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
@@ -44,7 +44,7 @@ exports.getEditProduct = (req, res) => {
           product: product,
           path: "/admin/edit-product",
           editing: editMode,
-          isAuthenticated : req.session.isLoggedIn,
+          isAuthenticated: req.session.isLoggedIn,
         });
       })
       .catch((err) => console.log(err));
@@ -52,21 +52,22 @@ exports.getEditProduct = (req, res) => {
 };
 
 // ? GET PRODUCTS FOR ADMIN PAGE
+//
 exports.getProducts = (req, res) => {
-  Product.find()
-    .populate('userId')
+  Product.find({ userId: req.user._id })
+    .populate("userId")
     .then((products) => {
-      console.log(products)
+      console.log(products);
       res.render("admin/products", {
         prods: products,
         pageTitle: "Admin products",
         path: "/admin/products",
-        isAuthenticated : req.session.isLoggedIn,
+        isAuthenticated: req.session.isLoggedIn,
       });
     });
 };
 
-// ? POST EDIT PRODUCT 
+// ? POST EDIT PRODUCT
 exports.postEditProduct = (req, res) => {
   const prodId = req.body.productId;
   const updatedTitle = req.body.title;
@@ -75,19 +76,21 @@ exports.postEditProduct = (req, res) => {
   const updatedDesreption = req.body.description;
   Product.findById(prodId)
     .then((product) => {
+      if (product.userId.toString() !== req.user._id.toString()) {
+        return res.redirect("/");
+      }
       product.title = updatedTitle;
       product.price = updatedPrice;
       product.desc = updatedDesreption;
       product.imageUrl = updatedImageUrl;
-      return product.save();
+      return product.save().then((result) => res.redirect("/"));
     })
-    .then((result) => res.redirect("/"))
     .catch((err) => console.log(err));
 };
 // ? DELETE PRODUCT
 exports.deleteProduct = (req, res) => {
   const prodId = req.body.productId;
-  Product.findByIdAndRemove(prodId)
+  Product.deleteOne({ _id: prodId, userId: req.user._id })
     .then((result) => {
       res.redirect("/admin/products");
     })
