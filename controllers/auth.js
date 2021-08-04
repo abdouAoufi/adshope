@@ -1,8 +1,9 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 
+// ? GET LOGIN CONTROLLER
 exports.getLogin = (req, res, next) => {
-  let message = req.flash("error");
+  let message = req.flash("error"); // retrive message if it's aviable
   if (message.length > 0) {
     message = message[0];
   } else {
@@ -15,7 +16,7 @@ exports.getLogin = (req, res, next) => {
   });
 };
 
-// ! THE SESSION IS GET CREATED HERE
+// ? POST LOGIN CONTROLLER
 exports.postLogin = (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -29,22 +30,27 @@ exports.postLogin = (req, res) => {
         .compare(password, user.password)
         .then((doMatch) => {
           if (doMatch) {
-            req.session.isLoggedIn = true; // session creation
-            req.session.user = user; // session creation
+            req.session.isLoggedIn = true; // ! session creation
+            req.session.user = user; // ! session creation
             req.session.save(() => {
               return res.redirect("/");
             });
           } else {
-            req.flash("error", "Invalid email or password.");  
+            req.flash("error", "You entered wrong password!");
             res.redirect("/login");
           }
         })
         .catch((err) => res.redirect("/login"));
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      req.flash("error", "Something went wrong!");
+      res.redirect("/login");
+    });
 };
 
+// ? GET SIGN UP CONTROLLER
 exports.getSignup = (req, res, next) => {
+  let message = req.flash("error"); // retrive message if it's aviable
   if (message.length > 0) {
     message = message[0];
   } else {
@@ -58,6 +64,7 @@ exports.getSignup = (req, res, next) => {
   });
 };
 
+// ? POST SIGN UP CONTROLLER
 exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -68,6 +75,7 @@ exports.postSignup = (req, res, next) => {
         req.flash("error", "Email already exists !!"); // ! we include flash message on the request ...
         return res.redirect("/signup");
       }
+
       bcrypt.hash(password, 12).then((hashedPassword) => {
         const user = new User({
           email,
@@ -82,6 +90,7 @@ exports.postSignup = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
+// ? POST LOGOUT CONTROLLER
 exports.postLogout = (req, res) => {
   console.log(req.body);
   req.session.destroy((err) => {
