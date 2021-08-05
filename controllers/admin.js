@@ -5,7 +5,6 @@ exports.getAddProduct = (req, res) => {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
-    isAuthenticated: req.session.isLoggedIn,
   });
 };
 // ? POST ADD PRODUCT ADMIN

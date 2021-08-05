@@ -25,7 +25,6 @@ mongoose
     console.log("The server running on 127.0.0.1:3000");
     app.listen(3000);
   })
-
   .catch((err) => console.log(err));
 
 // ? set up a view engine in our case is EJS
@@ -38,7 +37,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // ? parse incoming requests ..
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// ? using middleware routers ...
+// ? register session  ...
 app.use(
   session({
     secret: "my secrec",
