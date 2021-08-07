@@ -1,10 +1,13 @@
 const Product = require("../models/product");
+const { validationResult } = require("express-validator");
 // ? GET ADD PRODUCT ADMIN
 exports.getAddProduct = (req, res) => {
   res.render("admin/edit-product", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
+    hasError: false,
+    errorMessage: null,
   });
 };
 // ? POST ADD PRODUCT ADMIN
@@ -13,6 +16,19 @@ exports.postAddProduct = (req, res) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const desc = req.body.description;
+  const errors = validationResult(req);
+  console.log(errors.array())
+  if (!errors.isEmpty()) {
+    return res.status(422).render("admin/edit-product", {
+      pageTitle: "Edit Product",
+      path: "/admin/edit-product",
+      hasError: true,
+      errorMessage: errors.array()[0].msg,
+      editing: false,
+      product: { title, imageUrl, price, description: desc },
+    });
+  }
+
   const product = new Product({
     title,
     price,
@@ -41,9 +57,10 @@ exports.getEditProduct = (req, res) => {
         res.render("admin/edit-product", {
           pageTitle: "Edit Product",
           product: product,
+          hasError: true,
           path: "/admin/edit-product",
           editing: editMode,
-          isAuthenticated: req.session.isLoggedIn,
+          errorMessage: null,
         });
       })
       .catch((err) => console.log(err));
@@ -61,7 +78,7 @@ exports.getProducts = (req, res) => {
         prods: products,
         pageTitle: "Admin products",
         path: "/admin/products",
-        isAuthenticated: req.session.isLoggedIn,
+        errorMessage: null,
       });
     });
 };
@@ -73,6 +90,24 @@ exports.postEditProduct = (req, res) => {
   const updatedPrice = req.body.price;
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesreption = req.body.description;
+  const errors = validationResult(req);
+  console.log(errors.array())
+  if (!errors.isEmpty()) {
+    return res.status(422).render("admin/edit-product", {
+      pageTitle: "Edit Product",
+      path: "/admin/edit-product",
+      hasError: true,
+      errorMessage: errors.array()[0].msg,
+      editing: true,
+      product: {
+        title: updatedTitle,
+        imageUrl: updatedImageUrl,
+        price: updatedPrice,
+        description: updatedDesreption,
+        errorMessage: errors.array()[0].msg,
+      },
+    });
+  }
   Product.findById(prodId)
     .then((product) => {
       if (product.userId.toString() !== req.user._id.toString()) {
