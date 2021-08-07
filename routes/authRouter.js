@@ -7,7 +7,27 @@ const router = express.Router();
 // ? GET REQUEST LOGIN
 router.get("/login", authController.getLogin);
 // ? POST REQUEST LOGIN
-router.post("/login", authController.postLogin);
+router.post(
+  "/login",
+  [
+    check("email")
+      .isEmail()
+      .withMessage("Please enter a valid email ...")
+      .normalizeEmail()
+      .custom((value, { req }) => {
+        return User.findOne({ email: value }).then((userDoc) => {
+          if (!userDoc) {
+            return Promise.reject("Email not found in our system!");
+          }
+        });
+      }),
+    body("password", "Please enter valid password!")
+      .isLength({ min: 5 })
+      .isAlphanumeric()
+      .trim(),
+  ],
+  authController.postLogin
+);
 // ? POST REQUEST
 router.post("/logout", authController.postLogout);
 // ? GET REQUEST
@@ -27,11 +47,12 @@ router.post(
             );
           }
         });
-        return true;
-      }),
+      })
+      .normalizeEmail(),
     body("password", "Please enter valid password!")
       .isLength({ min: 5 })
-      .isAlphanumeric(),
+      .isAlphanumeric()
+      .trim(),
     body("confirmPassword").custom((value, { req }) => {
       if (value !== req.body.password) {
         throw new Error("Password has to match!");

@@ -12,12 +12,16 @@
         <% } %>
         <form class="login-form" action="/signup" method="POST">
             <div class="form-control">
-                <label for="email">E-Mail</label>
-                <input   name="email" id="email"   >
+                <label for="email" >E-Mail</label>
+                <input  class="<%= validationErrors.find(e => e.param === 'email') ? 'invalid' : '' %>"
+                 name="email"
+                 id="email"
+                 value="<%= oldInput.email %>" >
             </div>
             <div class="form-control">
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password">
+                <input class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>
+                 type="password" name="password" id="password" value="<%= oldInput.password %>">
             </div>
             <div class="form-control">
                 <label for="confirmPassword">Confirm Password</label>

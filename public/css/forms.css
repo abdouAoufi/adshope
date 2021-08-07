@@ -22,3 +22,6 @@
     outline-color: #ee5a5a;
 }
 
+.form-control .invalid {
+    border-color: #ee5a5a;
+}

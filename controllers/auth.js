@@ -24,6 +24,8 @@ exports.getLogin = (req, res, next) => {
     path: "/login",
     pageTitle: "Login",
     errorMessage: message, // pull the message by the key ...
+    oldInput: { email: "", password: "" },
+    validationErrors: [],
   });
 };
 
@@ -31,12 +33,19 @@ exports.getLogin = (req, res, next) => {
 exports.postLogin = (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).render("auth/login", {
+      path: "/login",
+      pageTitle: "login",
+      isAuthenticated: false,
+      errorMessage: errors.array()[0].msg, // pull the message by the key ...
+      oldInput: { email: email, password: password },
+      validationErrors: errors.array(),
+    });
+  }
   User.findOne({ email: email })
     .then((user) => {
-      if (!user) {
-        req.flash("error", "Invalid email or password."); // ! we include flash message on the request ...
-        return res.redirect("/login"); // fail to find the user
-      }
       bcrypt
         .compare(password, user.password)
         .then((doMatch) => {
@@ -54,8 +63,7 @@ exports.postLogin = (req, res) => {
         .catch((err) => res.redirect("/login"));
     })
     .catch((err) => {
-      req.flash("error", "Something went wrong!");
-      res.redirect("/login");
+      return res.redirect("/login");
     });
 };
 
@@ -72,6 +80,8 @@ exports.getSignup = (req, res, next) => {
     pageTitle: "Signup",
     isAuthenticated: false,
     errorMessage: message, // pull the message by the key ...
+    oldInput: { email: "", password: "" },
+    validationErrors: [],
   });
 };
 
@@ -87,6 +97,8 @@ exports.postSignup = (req, res, next) => {
       pageTitle: "Signup",
       isAuthenticated: false,
       errorMessage: errors.array()[0].msg, // pull the message by the key ...
+      oldInput: { email: email, password: password },
+      validationErrors: errors.array(),
     });
   }
 
