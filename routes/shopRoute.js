@@ -25,6 +25,6 @@ router.post("/create-order", isAuth, shopController.postOrder);
 router.get("/delete-order", isAuth, shopController.deleteOrder);
 
 // this is dynamic link ......
-router.get("/products/:productId", isAuth, shopController.getProduct);
+router.get("/products/:productId",  shopController.getProduct);
 
 module.exports = router;

@@ -2,7 +2,7 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const nodeMailer = require("nodemailer");
 const crypto = require("crypto");
-const { use } = require("../routes/authRouter");
+const { validationResult } = require("express-validator");
 
 const transport = nodeMailer.createTransport({
   service: "hotmail",
@@ -79,37 +79,38 @@ exports.getSignup = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
-  const confirmPassword = req.body.confirmPassword;
-  User.findOne({ email: email })
-    .then((userDoc) => {
-      if (userDoc) {
-        req.flash("error", "Email already exists !!"); // ! we include flash message on the request ...
-        return res.redirect("/signup");
-      }
+  const errors = validationResult(req);
 
-      bcrypt.hash(password, 12).then((hashedPassword) => {
-        const user = new User({
-          email,
-          password: hashedPassword,
-          cart: { items: [] },
-        });
-        user.save().then(() => {
-          res.redirect("/login");
-          transport
-            .sendMail({
-              from: "aoufitarek@outlook.fr",
-              to: email,
-              subject: "confirmation",
-              html: "<h1>Welcome ...>!</h1>",
-            })
-            .then((result) => {
-              console.log("Sent succesfully ..!");
-            })
-            .catch((err) => console.log(err));
-        });
-      });
-    })
-    .catch((err) => console.log(err));
+  if (!errors.isEmpty()) {
+    return res.status(422).render("auth/signup", {
+      path: "/signup",
+      pageTitle: "Signup",
+      isAuthenticated: false,
+      errorMessage: errors.array()[0].msg, // pull the message by the key ...
+    });
+  }
+
+  bcrypt.hash(password, 12).then((hashedPassword) => {
+    const user = new User({
+      email,
+      password: hashedPassword,
+      cart: { items: [] },
+    });
+    user.save().then(() => {
+      res.redirect("/login");
+      // transport
+      //   .sendMail({
+      //     from: "aoufitarek@outlook.fr",
+      //     to: email,
+      //     subject: "confirmation",
+      //     html: "<h1>Welcome ...>!</h1>",
+      //   })
+      //   .then((result) => {
+      //     console.log("Sent succesfully ..!");
+      //   })
+      //   .catch((err) => console.log(err));
+    });
+  });
 };
 
 // ? POST LOGOUT CONTROLLER
