@@ -60,10 +60,16 @@ exports.postLogin = (req, res) => {
             res.redirect("/login");
           }
         })
-        .catch((err) => res.redirect("/login"));
+        .catch((err) => {
+          const error = new Error(err);
+          error.httpStatusCode = 500;
+          return next(error);
+        });
     })
     .catch((err) => {
-      return res.redirect("/login");
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
     });
 };
 
@@ -108,20 +114,27 @@ exports.postSignup = (req, res, next) => {
       password: hashedPassword,
       cart: { items: [] },
     });
-    user.save().then(() => {
-      res.redirect("/login");
-      // transport
-      //   .sendMail({
-      //     from: "aoufitarek@outlook.fr",
-      //     to: email,
-      //     subject: "confirmation",
-      //     html: "<h1>Welcome ...>!</h1>",
-      //   })
-      //   .then((result) => {
-      //     console.log("Sent succesfully ..!");
-      //   })
-      //   .catch((err) => console.log(err));
-    });
+    user
+      .save()
+      .then(() => {
+        res.redirect("/login");
+        // transport
+        //   .sendMail({
+        //     from: "aoufitarek@outlook.fr",
+        //     to: email,
+        //     subject: "confirmation",
+        //     html: "<h1>Welcome ...>!</h1>",
+        //   })
+        //   .then((result) => {
+        //     console.log("Sent succesfully ..!");
+        //   })
+        //   .catch((err) => console.log(err));
+      })
+      .catch((err) => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+      });
   });
 };
 
@@ -183,11 +196,19 @@ exports.postReset = (req, res) => {
             .then((result) => {
               console.log("Sent succesfully ..!");
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+              const error = new Error(err);
+              error.httpStatusCode = 500;
+              return next(error);
+            });
         });
       })
 
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+      });
   });
 };
 
@@ -207,7 +228,11 @@ exports.getNewPassword = (req, res, next) => {
         return res.redirect("/");
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
   let message = req.flash("error"); // retrive message if it's aviable
   if (message.length > 0) {
     message = message[0];
@@ -237,5 +262,9 @@ exports.postNewPassword = (req, res) => {
       return resetUser.save();
     })
     .then(() => res.redirect("/login"))
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };

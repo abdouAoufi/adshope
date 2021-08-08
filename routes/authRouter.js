@@ -17,7 +17,7 @@ router.post(
       .custom((value, { req }) => {
         return User.findOne({ email: value }).then((userDoc) => {
           if (!userDoc) {
-            return Promise.reject("Email not found in our system!");
+            return Promise.reject("This email is not bound with any account!");
           }
         });
       }),
