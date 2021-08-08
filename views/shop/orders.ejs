@@ -7,7 +7,7 @@
     <%- include("../includes/navigation.ejs") %>   
    <main>
       <% if (orders.length <= 0) { %>
-         <h1>No order</h1>
+         <p>No order</p>
       <% } else {%>
             <ul>
                <% orders.forEach(order => { %>

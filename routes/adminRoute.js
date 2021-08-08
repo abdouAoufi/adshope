@@ -13,10 +13,12 @@ router.get("/add-product", isAuth, adminController.getAddProduct); // ? the requ
 router.post(
   "/add-product",
   [
-    check("title").isString(),
-    check("imageUrl").isURL(),
-    check("price").isFloat(),
-    check("description").isLength({ min: 5, max: 200 }),
+    check("title").isString().isLength({ min: 3 }).withMessage("Invalid title"),
+    check("imageUrl").isURL().withMessage("Invalid url"),
+    check("price").isFloat().withMessage("Invalid price"),
+    check("description")
+      .isLength({ min: 5, max: 200 })
+      .withMessage("Invalid description"),
   ],
   isAuth,
   adminController.postAddProduct
@@ -30,11 +32,13 @@ router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
 router.post(
   "/edit-product",
   [
-   check("title").trim().isAlphanumeric(),
-   check("imageUrl").isURL(),
-   check("price").isFloat(),
-   check("description").isLength({ min: 5, max: 200 }),
- ],
+    check("title").isString().isLength({ min: 3 }).withMessage("Invalid title"),
+    check("imageUrl").isURL().withMessage("Invalid url"),
+    check("price").isFloat().withMessage("Invalid price"),
+    check("description")
+      .isLength({ min: 5, max: 200 })
+      .withMessage("Invalid description"),
+  ],
   isAuth,
   adminController.postEditProduct
 );

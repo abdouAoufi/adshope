@@ -62,7 +62,7 @@ app.use((req, res, next) => {
       next();
     })
     .catch((err) => {
-      throw new Error(err);
+      next(new Error("Dummy"));
     });
 });
 
@@ -81,5 +81,9 @@ app.use("/500", errorController.get500);
 app.use(errorController.notFound);
 
 app.use((err, req, res, next) => {
-  res.redirect("/500")
+  res.status(500).render("500", {
+    pageTitle: "No response from server",
+    path: "/500",
+    isAuthenticated: req.iseLoggedIn,
+  });
 });

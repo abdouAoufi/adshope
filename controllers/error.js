@@ -8,7 +8,7 @@ exports.notFound = (req, res, next) => {
     });
 };
 
-
+// ! this will be fired every error occurd 
 exports.get500 = (req, res, next) => {
   res
     .status(500)
