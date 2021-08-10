@@ -47,8 +47,8 @@ app.use(
   }) // ! set up session
 );
 
+// ? used for send message to UI
 app.use(flash());
-
 app.use((req, res, next) => {
   if (!req.session.user) {
     return next();
@@ -81,6 +81,7 @@ app.use("/500", errorController.get500);
 app.use(errorController.notFound);
 
 app.use((err, req, res, next) => {
+  console.log(err);
   res.status(500).render("500", {
     pageTitle: "No response from server",
     path: "/500",

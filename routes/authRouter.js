@@ -1,6 +1,7 @@
 const express = require("express");
 const { check, body } = require("express-validator");
 const authController = require("../controllers/auth");
+const resetContreoller = require("../controllers/reset")
 const User = require("../models/user");
 
 const router = express.Router();
@@ -63,12 +64,12 @@ router.post(
   authController.postSignup
 );
 // ? GET REQUEST
-router.get("/reset", authController.getReset);
+router.get("/reset", resetContreoller.getReset);
 // ? POST REQUEST
-router.post("/reset", authController.postReset);
+router.post("/reset", resetContreoller.postReset);
 // ? GET REQUEST
-router.get("/reset/:token", authController.getNewPassword);
+router.get("/reset/:token", resetContreoller.getNewPassword);
 // ? POST REQUESR
-router.post("/new-password", authController.postNewPassword);
+router.post("/new-password", resetContreoller.postNewPassword);
 
 module.exports = router;
