@@ -31,20 +31,20 @@ exports.postAddProduct = (req, res, next) => {
       product: { title, price, description },
     });
   }
+  // if the file wasn't image ... 
   if (!image) {
     return res.status(422).render("admin/edit-product", {
       pageTitle: "add Product",
       path: "/admin/add-product",
       hasError: true,
-      errorMessage: "Attached file is not an image ",
+      errorMessage: "Attached file is not an image!",
       editing: false,
       product: { title, price, description },
     });
   }
-
+  // other wise save the product 
   const imageUrl = image.path;
   const product = new Product({
-    // _id: new mongoose.Types.ObjectId("6107bf6c7e3c9eae33c024f7"),
     title,
     price,
     desc: description,
@@ -118,6 +118,7 @@ exports.postEditProduct = (req, res, next) => {
   const updatedDesreption = req.body.description;
   const errors = validationResult(req);
   console.log(errors.array());
+  // validation step 
   if (!errors.isEmpty()) {
     return res.status(422).render("admin/edit-product", {
       pageTitle: "Edit Product",
@@ -142,10 +143,10 @@ exports.postEditProduct = (req, res, next) => {
       product.title = updatedTitle;
       product.price = updatedPrice;
       product.desc = updatedDesreption;
+       // ? if we have valid image otherwise keep the old one 
        if (image) {
           product.imageUrl = image.path;
        }
-     
       return product.save().then((result) => res.redirect("/"));
     })
     .catch((err) => {

@@ -1,6 +1,8 @@
 const Product = require("../models/product");
 const Order = require("../models/order");
 const order = require("../models/order");
+const fs = require("fs");
+const path = require("path");
 
 // ? GET HOME PAGE
 exports.getIndex = (req, res) => {
@@ -132,4 +134,19 @@ exports.deleteOrder = (req, res, next) => {
 
 exports.getCheckout = (req, res) => {
   res.render("/shop/checkout", { pageTitle: "Checkout page" });
+};
+
+// HANDLE INVOICES
+
+exports.getInvoice = (req, res, next) => {
+  const orderId = req.params.orderId;
+  const invoiceName = "simple-" + orderId + ".pdf";
+  console.log(invoiceName)
+  const invoicePath = path.join("data", "invoices", invoiceName);
+  fs.readFile(invoicePath, (err, data) => {
+    if (err) {
+      return next(err);
+    }
+    res.send(data);
+  });
 };

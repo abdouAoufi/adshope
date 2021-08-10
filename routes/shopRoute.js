@@ -27,4 +27,6 @@ router.get("/delete-order", isAuth, shopController.deleteOrder);
 // this is dynamic link ......
 router.get("/products/:productId",  shopController.getProduct);
 
+router.get("/orders/:orderId" , isAuth , shopController.getInvoice)
+
 module.exports = router;

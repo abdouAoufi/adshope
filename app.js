@@ -11,8 +11,9 @@ const session = require("express-session"); // session
 const MongoDbStore = require("connect-mongodb-session")(session); // store sessions ....
 const csrf = require("csurf"); // protecting against CSRF
 const flash = require("connect-flash"); // for sending data to the client on the session
-const multer = require("multer");
+const multer = require("multer"); // for handling images and files ...
 
+// storeage configuration
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "images");
@@ -22,6 +23,7 @@ const fileStorage = multer.diskStorage({
   },
 });
 
+// filter files so only images are accepted ...
 const fileFilter = (req, file, cb) => {
   if (
     file.mimetype === "image/png" ||
@@ -37,7 +39,7 @@ const fileFilter = (req, file, cb) => {
 const MONGODBURL = "mongodb://localhost:27017/"; // URL where we store database ...
 
 const app = express(); // start the app ....
-const store = new MongoDbStore({ uri: MONGODBURL, collection: "sessions" });
+const store = new MongoDbStore({ uri: MONGODBURL, collection: "sessions" }); // save session on the database ...
 
 const csrfProtection = csrf(); // for sucurity
 
@@ -55,10 +57,10 @@ app.set("views", "views");
 
 // ? use static files ....
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/images" ,express.static(path.join(__dirname, "images")));
+app.use("/images" ,express.static(path.join(__dirname, "images"))); // serve images statically from the images folder ....
 
 // ? parse incoming requests ..
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single("image"));
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")); // set up multer for image field 
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // ? register session  ...
