@@ -11,6 +11,28 @@ const session = require("express-session"); // session
 const MongoDbStore = require("connect-mongodb-session")(session); // store sessions ....
 const csrf = require("csurf"); // protecting against CSRF
 const flash = require("connect-flash"); // for sending data to the client on the session
+const multer = require("multer");
+
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString() + "-" + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "image/jpg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
 
 const MONGODBURL = "mongodb://localhost:27017/"; // URL where we store database ...
 
@@ -33,8 +55,10 @@ app.set("views", "views");
 
 // ? use static files ....
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/images" ,express.static(path.join(__dirname, "images")));
 
 // ? parse incoming requests ..
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single("image"));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // ? register session  ...
@@ -81,10 +105,11 @@ app.use("/500", errorController.get500);
 app.use(errorController.notFound);
 
 app.use((err, req, res, next) => {
-  console.log(err);
+  // console.log(err);
   res.status(500).render("500", {
     pageTitle: "No response from server",
     path: "/500",
+    err : err,
     isAuthenticated: req.iseLoggedIn,
   });
 });

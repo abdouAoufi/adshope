@@ -14,7 +14,6 @@ router.post(
   "/add-product",
   [
     check("title").isString().isLength({ min: 3 }).withMessage("Invalid title"),
-    check("imageUrl").isURL().withMessage("Invalid url"),
     check("price").isFloat().withMessage("Invalid price"),
     check("description")
       .isLength({ min: 5, max: 200 })
@@ -33,7 +32,6 @@ router.post(
   "/edit-product",
   [
     check("title").isString().isLength({ min: 3 }).withMessage("Invalid title"),
-    check("imageUrl").isURL().withMessage("Invalid url"),
     check("price").isFloat().withMessage("Invalid price"),
     check("description")
       .isLength({ min: 5, max: 200 })
