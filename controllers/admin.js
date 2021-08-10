@@ -1,6 +1,7 @@
 const Product = require("../models/product");
 const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
+const fileHelper = require("../util/file");
 
 // ? GET ADD PRODUCT ADMIN
 exports.getAddProduct = (req, res) => {
@@ -31,7 +32,7 @@ exports.postAddProduct = (req, res, next) => {
       product: { title, price, description },
     });
   }
-  // if the file wasn't image ... 
+  // if the file wasn't image ...
   if (!image) {
     return res.status(422).render("admin/edit-product", {
       pageTitle: "add Product",
@@ -42,7 +43,7 @@ exports.postAddProduct = (req, res, next) => {
       product: { title, price, description },
     });
   }
-  // other wise save the product 
+  // other wise save the product
   const imageUrl = image.path;
   const product = new Product({
     title,
@@ -74,7 +75,7 @@ exports.getEditProduct = (req, res, next) => {
   } else {
     Product.findById(idProduct)
       .then((product) => {
-        console.log("Product to be send to edit => ",product)
+        console.log("Product to be send to edit => ", product);
         res.render("admin/edit-product", {
           pageTitle: "Edit Product",
           product: product,
@@ -118,7 +119,7 @@ exports.postEditProduct = (req, res, next) => {
   const updatedDesreption = req.body.description;
   const errors = validationResult(req);
   console.log(errors.array());
-  // validation step 
+  // validation step
   if (!errors.isEmpty()) {
     return res.status(422).render("admin/edit-product", {
       pageTitle: "Edit Product",
@@ -134,7 +135,7 @@ exports.postEditProduct = (req, res, next) => {
       },
     });
   }
- 
+
   Product.findById(prodId)
     .then((product) => {
       if (product.userId.toString() !== req.user._id.toString()) {
@@ -143,10 +144,11 @@ exports.postEditProduct = (req, res, next) => {
       product.title = updatedTitle;
       product.price = updatedPrice;
       product.desc = updatedDesreption;
-       // ? if we have valid image otherwise keep the old one 
-       if (image) {
-          product.imageUrl = image.path;
-       }
+      // ? if we have valid image otherwise keep the old one
+      if (image) {
+        fileHelper(product.imageUrl);
+        product.imageUrl = image.path;
+      }
       return product.save().then((result) => res.redirect("/"));
     })
     .catch((err) => {
@@ -159,8 +161,16 @@ exports.postEditProduct = (req, res, next) => {
 // ? DELETE PRODUCT
 exports.deleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteOne({ _id: prodId, userId: req.user._id })
+  Product.findById(prodId)
+    .then((product) => {
+      if (!product) {
+        return next(new Error("product not found !!"));
+      }
+      fileHelper(product.imageUrl);
+      return Product.deleteOne({ _id: prodId, userId: req.user._id });
+    })
     .then((result) => {
+      console.log("DESTROYED PRD .....");
       res.redirect("/admin/products");
     })
     .catch((err) => {
