@@ -4,16 +4,32 @@ const order = require("../models/order");
 const fs = require("fs");
 const path = require("path");
 const PDFDocument = require("pdfkit");
+
+const ITEMS_PAGE = 2;
 // ? GET HOME PAGE
 exports.getIndex = (req, res) => {
-  console.log(req.session.user);
+  let page = 1 ;
+  page = +req.query.page;
+  let totalItems;
+
   Product.find()
+    .countDocuments()
+    .then((numOfProducts) => {
+      totalItems = numOfProducts;
+      return Product.find()
+        .skip((page - 1) * ITEMS_PAGE)
+        .limit(ITEMS_PAGE);
+    })
     .then((products) => {
+      if (products.length === 0) {
+        return res.redirect("/");
+      }
       res.render("shop/index", {
         prods: products,
         pageTitle: "All products",
         path: "/",
-        isAuthenticated: req.session.isLoggedIn,
+        totalPages: Math.ceil(totalItems / 2),
+        currentPageIndex : page,
       });
     })
     .catch((err) => console.log(err));
@@ -136,7 +152,7 @@ exports.getCheckout = (req, res) => {
   res.render("/shop/checkout", { pageTitle: "Checkout page" });
 };
 
-// HANDLE INVOICES
+// ! HANDLE INVOICES
 // serve file only to users who are auth
 exports.getInvoice = (req, res, next) => {
   const orderId = req.params.orderId;
@@ -146,10 +162,9 @@ exports.getInvoice = (req, res, next) => {
         return next(new Error("ERROR NO ORDER FOUND"));
       }
       if (order.user.userId.toString() !== req.user._id.toString()) {
-        return next(new Error("ERROR NO ORDER FOUND"));
+        return next(new Error("ERROR NO ORDER MATCH"));
       }
       const invoiceName = "simple-" + orderId + ".pdf";
-      console.log(invoiceName);
       const invoicePath = path.join("data", "invoices", invoiceName);
       const pdfDoc = new PDFDocument();
       res.setHeader("Content-Type", "application/pdf");

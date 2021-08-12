@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700");
 
 * {
   box-sizing: border-box;
@@ -7,7 +7,7 @@
 body {
   padding: 0;
   margin: 0;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 main {
@@ -26,7 +26,6 @@ form {
   padding: 0 1.5rem;
   display: flex;
   align-items: center;
-
 }
 
 .main-header__nav {
@@ -207,7 +206,28 @@ form {
   }
 }
 
-
 .centered {
   text-align: center;
+}
+
+.pagination a {
+  text-decoration: none;
+  color: #ee5a5a;
+  padding: 0.5rem;
+  border: 1px solid #ee5a5a;
+  margin: 0 6px;
+}
+.pagination a:hover,
+a:active {
+  background-color: #ee5a5a;
+  color: white;
+}
+.pagination {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.pagination a.active {
+  background-color: #ee5a5a;
+  color: white;
 }

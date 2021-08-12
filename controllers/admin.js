@@ -49,7 +49,7 @@ exports.postAddProduct = (req, res, next) => {
     title,
     price,
     desc: description,
-    imageUrl,
+    imageUrl, // ? store path of file in database ....
     userId: req.user,
   });
   // we have save method
@@ -152,7 +152,6 @@ exports.postEditProduct = (req, res, next) => {
       return product.save().then((result) => res.redirect("/"));
     })
     .catch((err) => {
-      console.log(err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);

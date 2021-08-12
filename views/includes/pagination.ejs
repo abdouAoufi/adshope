@@ -1,0 +1,21 @@
+ <section class="pagination">
+            <% let start = 0; 
+                let rendring = 0 ;         
+                if(currentPageIndex >= start + 4 ){
+                    rendring = 0;
+                    start = currentPageIndex - 1 ;
+                }   
+            %> 
+          <% for( let i = Number(start); i < totalPages ; i++ ) { %>
+            <% if (rendring < 5) { %>
+             <a href="/?page=<%= i+1 %>" 
+                    <% if( i+1 == currentPageIndex) { %>
+                     class="active" 
+                     <% } %> 
+                     >
+                    <%= i+1 %> 
+                </a>
+            <% rendring ++; } %>
+                
+          <% } %>
+</section>
