@@ -12,9 +12,10 @@ const MongoDbStore = require("connect-mongodb-session")(session); // store sessi
 const csrf = require("csurf"); // protecting against CSRF
 const flash = require("connect-flash"); // for sending data to the client on the session
 const multer = require("multer"); // for handling images and files ...
-const helmet = require("helmet") // secure
-const compression = require("compression")
-
+const helmet = require("helmet"); // secure
+const compression = require("compression"); // reduce files sizes
+const morgan = require("morgan"); // loggin details
+const fs = require("fs");
 
 const app = express(); // start the app ....
 const MONGODBURL = `mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPASSWORD}@firsttry.vojoa.mongodb.net/${process.env.MONGODBNAME}}?retryWrites=true&w=majority`; // URL where we store database ...
@@ -62,7 +63,14 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "images"))); // serve images statically from the images folder ....
 app.use(express.static(path.join(__dirname, "./"))); // serve images statically from the images folder ....
 app.use(helmet());
-app.use(compression())
+app.use(compression());
+
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" }
+);
+
+app.use(morgan("combined", { stream: accessLogStream }));
 // ? parse incoming requests ..
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
