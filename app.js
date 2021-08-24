@@ -71,7 +71,7 @@ app.use(helmet());
 app.use(compression());
 
 const accessLogStream = fs.createWriteStream(
-  path.join(__dirname, "./log/access.log"),
+  path.join(__dirname, "access.log"),
   { flags: "a" }
 );
 
