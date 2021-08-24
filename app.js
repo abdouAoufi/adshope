@@ -58,9 +58,9 @@ mongoose
   .catch((err) => console.log(err));
 
 // ? set up a view engine in our case is EJS
-app.set("view engine", "ejs");
-app.engine('ejs', require('ejs').__express);
-app.set("views", "views");
+// app.set("view engine", "ejs");
+// app.engine('ejs', require('ejs').__express);
+// app.set("views", "views");
 
 // ? use static files ....
 app.use(express.static(path.join(__dirname, "public")));
