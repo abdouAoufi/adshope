@@ -18,7 +18,6 @@
     "nodemon": "^1.18.3"
   },
   "dependencies": {
-    "ejs": "^2.7.4",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
@@ -26,7 +25,8 @@
     "connect-flash": "^0.1.1",
     "connect-mongodb-session": "^3.0.0",
     "csurf": "^1.11.0",
-    "express": "^4.16.3",
+    "ejs": "^2.7.4",
+    "express": "^4.17.1",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.17.2",
     "express-validator": "^6.12.1",
