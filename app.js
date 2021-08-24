@@ -16,10 +16,14 @@ const helmet = require("helmet"); // secure
 const compression = require("compression"); // reduce files sizes
 const morgan = require("morgan"); // loggin details
 const fs = require("fs");
+const https = require("https"); // encreption ....
 
 const app = express(); // start the app ....
 const MONGODBURL = `mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPASSWORD}@firsttry.vojoa.mongodb.net/${process.env.MONGODBNAME}}?retryWrites=true&w=majority`; // URL where we store database ...
 const store = new MongoDbStore({ uri: MONGODBURL, collection: "sessions" }); // save session on the database ...
+
+const privateKey = fs.readFileSync("server.key");
+const certificate = fs.readFileSync("server.cert");
 
 // storeage configuration
 const fileStorage = multer.diskStorage({
@@ -49,7 +53,10 @@ const csrfProtection = csrf(); // for sucurity
 mongoose
   .connect(MONGODBURL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    app.listen(process.env.PORT || 3000);
+    // https
+    //   .createServer({ key: privateKey, cert: certificate }, app)
+    //   .listen(process.env.PORT || 3000);
+    app.listen(process.env.PORT || 3000)
     console.log("The server running on 127.0.0.1:3000");
   })
   .catch((err) => console.log(err));
