@@ -54,13 +54,14 @@ mongoose
   .connect(MONGODBURL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     app.listen(process.env.PORT || 3000)
+    console.log("runn")
   })
   .catch((err) => console.log(err));
 
 // ? set up a view engine in our case is EJS
-// app.set("view engine", "ejs");
-// app.engine('ejs', require('ejs').__express);
-// app.set("views", "views");
+app.set("view engine", "ejs");
+app.engine('ejs', require('ejs').__express);
+app.set("views", "views");
 
 // ? use static files ....
 app.use(express.static(path.join(__dirname, "public")));
