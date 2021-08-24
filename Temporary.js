@@ -97,6 +97,9 @@ module.exports = class Cart {
   }
 };
 
+const MONGODBURL = "mongodb+srv://abbdou:abdoumca1921@firsttry.vojoa.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"; // URL where we store database ...
+// 
+
 const express = require("express"); // express framework
 const path = require("path"); // file system module
 const errorController = require("./controllers/error"); // controller

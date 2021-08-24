@@ -1,0 +1,8 @@
+{
+    "env" : {
+        "MONGOUSER" : "abbdou",
+        "MONGOPASSWORD" : "abdoumca1921",
+        "MONGODBNAME" : "myFirstDatabase",
+        "PORT" : "3000"
+    }
+}

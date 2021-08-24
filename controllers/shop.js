@@ -8,28 +8,15 @@ const PDFDocument = require("pdfkit");
 const ITEMS_PAGE = 2;
 // ? GET HOME PAGE
 exports.getIndex = (req, res) => {
-  let page = 1 ;
-  page = +req.query.page;
-  let totalItems;
-
   Product.find()
-    .countDocuments()
-    .then((numOfProducts) => {
-      totalItems = numOfProducts;
-      return Product.find()
-        .skip((page - 1) * ITEMS_PAGE)
-        .limit(ITEMS_PAGE);
-    })
     .then((products) => {
       if (products.length === 0) {
-        return res.redirect("/");
+        return res.redirect("/products");
       }
-      res.render("shop/index", {
+      return res.render("shop/index", {
         prods: products,
         pageTitle: "All products",
         path: "/",
-        totalPages: Math.ceil(totalItems / 2),
-        currentPageIndex : page,
       });
     })
     .catch((err) => console.log(err));
