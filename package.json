@@ -1,8 +1,12 @@
 {
+
   "name": "nodejs-complete-guide",
   "version": "1.0.0",
   "description": "Complete Node.js Guide",
   "main": "app.js",
+  "engines" : {
+    "node" : "16.7.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=production MONGOUSER=abbdou MONGOPASSWORD=abdoumca1921 MONGODBNAME=myFirstDatabase PORT=3000 node app.js",
