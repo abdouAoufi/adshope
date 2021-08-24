@@ -59,6 +59,7 @@ mongoose
 
 // ? set up a view engine in our case is EJS
 app.set("view engine", "ejs");
+app.engine('ejs', require('ejs').__express);
 app.set("views", "views");
 
 // ? use static files ....
