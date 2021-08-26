@@ -55,6 +55,17 @@ ___
 It's quite easy to get it done.
 
  * Simply go and clone this projecy, copy link then.
- * After installing it run this command
- * After installing all dependacies you're good to go just type this command
+  ``` 
+  git clone [link]
+  ```
+ * After downloading it navigate to the folder  run this command.
+  
+  ```
+    npm install
+  ```
+ * After installing all dependacies you're good to go just type this command.
+  ```
+  npm start 
+  ```
+  
   
