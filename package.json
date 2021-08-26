@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Complete Node.js Guide",
   "main": "app.js",
+  "engines": {
+    "node": "16.7.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=production MONGOUSER=abbdou MONGOPASSWORD=abdoumca1921 MONGODBNAME=myFirstDatabase PORT=3000 node app.js",
@@ -22,8 +25,8 @@
     "connect-flash": "^0.1.1",
     "connect-mongodb-session": "^3.0.0",
     "csurf": "^1.11.0",
-    "ejs": "^2.6.1",
-    "express": "^4.16.3",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.17.2",
     "express-validator": "^6.12.1",

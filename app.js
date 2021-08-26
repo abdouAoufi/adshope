@@ -22,8 +22,10 @@ const app = express(); // start the app ....
 const MONGODBURL = `mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPASSWORD}@firsttry.vojoa.mongodb.net/${process.env.MONGODBNAME}}?retryWrites=true&w=majority`; // URL where we store database ...
 const store = new MongoDbStore({ uri: MONGODBURL, collection: "sessions" }); // save session on the database ...
 
-const privateKey = fs.readFileSync("server.key");
-const certificate = fs.readFileSync("server.cert");
+// const privateKey = fs.readFileSync("server.key");
+// const certificate = fs.readFileSync("server.cert");
+
+
 
 // storeage configuration
 const fileStorage = multer.diskStorage({
@@ -53,27 +55,24 @@ const csrfProtection = csrf(); // for sucurity
 mongoose
   .connect(MONGODBURL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    // https
-    //   .createServer({ key: privateKey, cert: certificate }, app)
-    //   .listen(process.env.PORT || 3000);
     app.listen(process.env.PORT || 3000)
-    console.log("The server running on 127.0.0.1:3000");
+    console.log("runn")
   })
   .catch((err) => console.log(err));
 
 // ? set up a view engine in our case is EJS
 app.set("view engine", "ejs");
+app.engine('ejs', require('ejs').__express);
 app.set("views", "views");
 
 // ? use static files ....
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "images"))); // serve images statically from the images folder ....
-app.use(express.static(path.join(__dirname, "./"))); // serve images statically from the images folder ....
 app.use(helmet());
 app.use(compression());
 
 const accessLogStream = fs.createWriteStream(
-  path.join(__dirname, "./log/access.log"),
+  path.join(__dirname, "access.log"),
   { flags: "a" }
 );
 
